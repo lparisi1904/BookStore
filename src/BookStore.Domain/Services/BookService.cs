@@ -1,11 +1,12 @@
 ﻿using BookStore.Domain.Interfaces;
+using BookStore.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookStore.Domain.Models
+namespace BookStore.Domain.Services
 {
     public class BookService : IBookService
     {
@@ -57,7 +58,7 @@ namespace BookStore.Domain.Models
 
         public async Task<IEnumerable<Book>> Search(string bookName)
         {
-            return await _bookRepository.Search(c => c.Name.Contains(bookName));
+            return await _bookRepository.Search(c => c.Title.Contains(bookName));
         }
 
         public async Task<IEnumerable<Book>> SearchBookWithCategory(string searchedValue)
