@@ -9,5 +9,6 @@ public partial class BookCategory
 
     public string Name { get; set; } = null!;
 
+    /* EF Relations */
     public virtual ICollection<Book> Books { get; } = new List<Book>();
 }
