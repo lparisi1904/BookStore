@@ -29,7 +29,7 @@ namespace BookStore.Domain.Services
 
         public async Task<Book> Add(Book book)
         {
-            if (_bookRepository.Search(b => b.Name == book.Name).Result.Any())
+            if (_bookRepository.Search(b => b.Title == book.Title).Result.Any())
                 return null;
 
             await _bookRepository.Add(book);
@@ -38,7 +38,7 @@ namespace BookStore.Domain.Services
 
         public async Task<Book> Update(Book book)
         {
-            if (_bookRepository.Search(b => b.Name == book.Name && b.Id != book.Id).Result.Any())
+            if (_bookRepository.Search(b => b.Title == book.Title && b.Id != book.Id).Result.Any())
                 return null;
 
             await _bookRepository.Update(book);
@@ -58,7 +58,7 @@ namespace BookStore.Domain.Services
 
         public async Task<IEnumerable<Book>> Search(string bookName)
         {
-            return await _bookRepository.Search(c => c.Name.Contains(bookName));
+            return await _bookRepository.Search(c => c.Title.Contains(bookName));
         }
 
         public async Task<IEnumerable<Book>> SearchBookWithCategory(string searchedValue)

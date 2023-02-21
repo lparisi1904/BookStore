@@ -1,10 +1,13 @@
-﻿namespace BookStore.Domain.Models
-{
-    public class Category : Entity
-    {
-        public string Name { get; set; }
+﻿using System;
+using System.Collections.Generic;
 
-        /* EF Relations */
-        public IEnumerable<Book> Books { get; set; }
-    }
+namespace BookStore.Domain.Models;
+
+public partial class Category: Entity
+{
+    //public long Id { get; set; }
+
+    public string Name { get; set; } = null!;
+
+    public virtual ICollection<Book> Books { get; } = new List<Book>();
 }

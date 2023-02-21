@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BookStore.Domain.Models
+namespace BookStore.Domain.Models;
+
+public partial class Book: Entity
 {
-    public class Book : Entity
-    {
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public string Description { get; set; }
-        public double Value { get; set; }
-        public DateTime PublishDate { get; set; }
-        public int CategoryId { get; set; }
+    //public long Id { get; set; }
 
-        /* EF Relation */
-        public Category Category { get; set; }
-    }
+    public string Title { get; set; } = null!;
+
+    public string Author { get; set; } = null!;
+
+    public string Description { get; set; } = null!;
+
+    public long CategoryId { get; set; }
+
+    public long PublisherId { get; set; }
+
+    public virtual Category Category { get; set; } = null!;
+
+    public virtual Publisher Publisher { get; set; } = null!;
 }

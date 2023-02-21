@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace BookStore.Domain.Models;
 
-public partial class Publisher
+public partial class Publisher: Entity
 {
-    public long Id { get; set; }
+    //public long Id { get; set; }
 
     public string Name { get; set; } = null!;
 
