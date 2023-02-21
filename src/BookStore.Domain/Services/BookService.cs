@@ -58,7 +58,7 @@ namespace BookStore.Domain.Services
 
         public async Task<IEnumerable<Book>> Search(string bookName)
         {
-            return await _bookRepository.Search(c => c.Title.Contains(bookName));
+            return await _bookRepository.Search(c => c.Name.Contains(bookName));
         }
 
         public async Task<IEnumerable<Book>> SearchBookWithCategory(string searchedValue)
