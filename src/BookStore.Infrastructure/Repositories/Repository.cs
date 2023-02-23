@@ -8,11 +8,13 @@ using System.Runtime.ConstrainedExecution;
 
 namespace BookStore.Infrastructure.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
+        // La proprietà Db è protetta perché tutte le classi che ereditano dal repository possono accedere alla proprietà Db.
         protected readonly BookStoreContext Db;
         // È possibile usare un oggetto DbSet<TEntity> per eseguire query e salvare le istanze di TEntity.
         // Le query LINQ su un DbSet< TEntity > verranno tradotte in query su DB.
+        // La proprietà DbSet viene utilizzata come scorciatoia per eseguire le operazioni nel database
         protected readonly DbSet<TEntity> DbSet;
 
         protected Repository(BookStoreContext db)
@@ -47,6 +49,8 @@ namespace BookStore.Infrastructure.Repositories
             await SaveChanges();
         }
 
+        //AsNoTracking => leggendo qualcosa nel database, possiamo usare AsNoTracking per aumentare le prestazioni nel nostro applicazione.
+        // nella scrittura / aggornamento NON usare
         public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.AsNoTracking().Where(predicate).ToListAsync();

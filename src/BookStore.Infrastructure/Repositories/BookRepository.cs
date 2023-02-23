@@ -53,7 +53,6 @@ namespace BookStore.Infrastructure.Repositories
         }
 
 
-
         public Task Add(Book entity)
         {
             throw new NotImplementedException();

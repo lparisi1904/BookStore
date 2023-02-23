@@ -1,4 +1,7 @@
+using BookStore.Domain.Interfaces;
 using BookStore.Domain.Models;
+using BookStore.Domain.Services;
+using BookStore.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -8,24 +11,18 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 
 
-//// Add services to the container.
-//var connectionString = builder.Configuration.GetConnectionString("ConnStr");
-//builder.Services.AddDbContext<BookStoreDbContext>(options => options.UseSqlServer(connectionString));
-
-//builder.Services.AddDbContext<BookStoreDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
+//Add services to the container.
 
 // Register database
 builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
 
 // Register Library Service to use it with Dependency Injection in Controllers
-//builder.Services.AddTransient<ILibraryService, LibraryService>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
 //builder.Services.AddAutoMapper();
-
-
 
 //// Register Library Service to use it with Dependency Injection in Controllers
 //builder.Services.AddScoped<IService<Author, AuthorDetailsDto>, AuthorDataManager>();

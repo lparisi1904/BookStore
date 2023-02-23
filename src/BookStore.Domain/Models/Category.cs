@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BookStore.Domain.Models;
 
-public partial class Category: Entity
+public partial class Category: BaseEntity
 {
     //public long Id { get; set; }
 
