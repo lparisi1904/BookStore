@@ -25,7 +25,7 @@ namespace BookStore.Domain.Services
             return await _bookRepository.GetAll();
         }
 
-        public async Task<Book> GetById(int id)
+        public async Task<Book> GetById(long id)
         {
             return await _bookRepository.GetById(id);
         }
@@ -53,7 +53,7 @@ namespace BookStore.Domain.Services
             return book;
         }
 
-        public async Task<IEnumerable<Book>> GetBooksByCategory(int categoryId)
+        public async Task<IEnumerable<Book>> GetBooksByCategory(long categoryId)
         {
             return await _bookRepository.GetBooksByCategory(categoryId);
         }

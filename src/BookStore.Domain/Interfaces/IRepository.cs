@@ -7,7 +7,7 @@ namespace BookStore.Domain.Interfaces
     {
         Task Add(TEntity entity);
         Task<List<TEntity>> GetAll();
-        Task<TEntity> GetById(int id);
+        Task<TEntity> GetById(long id);
         Task Update(TEntity entity);
         Task Remove(TEntity entity);
         //IEnumerable => piu veloce rispetto a List perché ottiene i dati solo quando sono necessari.

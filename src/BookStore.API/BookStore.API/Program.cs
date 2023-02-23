@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System;
+using AutoMapper;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,12 +19,16 @@ builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
 
 // Register Library Service to use it with Dependency Injection in Controllers
+//builder.Services.AddScoped<BookStoreDbContext>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBookService, BookService>();
+
+
 
 //builder.Services.AddAutoMapper();
-
 //// Register Library Service to use it with Dependency Injection in Controllers
 //builder.Services.AddScoped<IService<Author, AuthorDetailsDto>, AuthorDataManager>();
 
@@ -43,14 +48,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo()
-    {
-        Title = "BookStore API",
-        Version = "v1"
-    });
-});
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    c.SwaggerDoc("v1", new OpenApiInfo()
+//    {
+//        Title = "BookStore API",
+//        Version = "v1"
+//    });
+//});
 
 // reference to CORS
 builder.Services.AddCors();

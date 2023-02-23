@@ -28,14 +28,14 @@ namespace BookStore.Infrastructure.Repositories
                 .OrderBy(c => c.Title)
                 .ToListAsync();
 
-        public async Task<Book> GetById(int id) 
+        public async Task<Book> GetById(long id) 
             => await Db.Books
                 .AsNoTracking()
                 .Include(b => b.Category)
                 .Where(c => c.Id == id)
                 .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<Book>> GetBooksByCategory(int categoryId)
+        public async Task<IEnumerable<Book>> GetBooksByCategory(long categoryId)
         {
             return await Search(b => b.CategoryId == categoryId);
         }
@@ -58,11 +58,7 @@ namespace BookStore.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-        
+       
         public Task Remove(Book entity)
         {
             throw new NotImplementedException();

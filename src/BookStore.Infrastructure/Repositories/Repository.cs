@@ -32,7 +32,7 @@ namespace BookStore.Infrastructure.Repositories
             return await DbSet.ToListAsync();
         }
 
-        public virtual async Task<TEntity> GetById(int id)
+        public virtual async Task<TEntity> GetById(long id)
         {
             return await DbSet.FindAsync(id);
         }
