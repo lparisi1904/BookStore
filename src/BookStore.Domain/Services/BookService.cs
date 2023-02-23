@@ -3,6 +3,7 @@ using BookStore.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,10 +13,12 @@ namespace BookStore.Domain.Services
     {
         private readonly IBookRepository _bookRepository;
 
+
         public BookService(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }
+
 
         public async Task<IEnumerable<Book>> GetAll()
         {
@@ -44,11 +47,10 @@ namespace BookStore.Domain.Services
             await _bookRepository.Update(book);
             return book;
         }
-
-        public async Task<bool> Remove(Book book)
+        public async Task<Book> Remove(Book book)
         {
             await _bookRepository.Remove(book);
-            return true;
+            return book;
         }
 
         public async Task<IEnumerable<Book>> GetBooksByCategory(int categoryId)
@@ -71,9 +73,12 @@ namespace BookStore.Domain.Services
             _bookRepository?.Dispose();
         }
 
-        Task<Book> IBookService.Remove(Book book)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<bool> Remove(Book book)
+        //{
+        //    await _bookRepository.Remove(book);
+        //    return true;
+        //}
+
+
     }
 }
