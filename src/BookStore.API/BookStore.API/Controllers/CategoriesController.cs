@@ -81,6 +81,7 @@ namespace BookStore.API.Controllers
         [HttpDelete("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(long id)
         {
             var category = await _categoryService.GetById(id);
@@ -94,6 +95,24 @@ namespace BookStore.API.Controllers
            var CategoryDto = category.Adapt<Dtos.CategoryResultDto>();
 
            return Ok(CategoryDto);
+        }
+
+        [HttpGet("Search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<Dtos.CategoryResultDto>>> Search(string searchCategory)
+        {
+            var listCategories = await _categoryService.Search(searchCategory);
+
+            if (listCategories != null && listCategories.Count() != 0)
+            {
+                var categories = listCategories.Adapt<IEnumerable<Dtos.CategoryResultDto>>();
+
+                
+                return Ok(categories);
+            }
+
+            return NotFound("Nessuna categoria trovata.");
         }
     }
 }
