@@ -115,7 +115,7 @@ namespace BookStore.API.Controllers
 
             await _bookService.Remove(book);
 
-            return Ok("cancellato");
+            return Ok("Libro cancellato correttamente.");
         }
 
         [HttpGet]

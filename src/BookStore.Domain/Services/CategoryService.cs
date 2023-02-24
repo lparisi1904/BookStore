@@ -24,7 +24,7 @@ namespace BookStore.Domain.Services
             return await _categoryRepository.GetAll();
         }
 
-        public async Task<Category> GetById(int id)
+        public async Task<Category> GetById(long id)
         {
             return await _categoryRepository.GetById(id);
         }
