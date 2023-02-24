@@ -1,12 +1,9 @@
-﻿using BookStore.API.Dtos;
-using BookStore.API.Dtos.Category;
+﻿using BookStore.API.Dtos.Category;
 using BookStore.Domain.Interfaces;
 using BookStore.Domain.Models;
-using BookStore.Domain.Services;
-using Mapster;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static System.Reflection.Metadata.BlobBuilder;
+using Mapster;
+
 
 namespace BookStore.API.Controllers
 {
@@ -25,14 +22,12 @@ namespace BookStore.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            //var categories = await _categoryService.GetAll();
-
-            //return Ok(_mapper.Map<IEnumerable<CategoryResultDto>>(categories));
-
             var categories = await _categoryService.GetAll();
-            var listCategories = categories.Adapt<IEnumerable<Dtos.CategoryResultDto>>();
 
-            return Ok(listCategories);
+            // Map Entity to Dto..
+            var listCategoriesDto = categories.Adapt<IEnumerable<Dtos.CategoryResultDto>>();
+
+            return Ok(listCategoriesDto);
         }
 
         [HttpGet("{id:long}")]
@@ -53,11 +48,11 @@ namespace BookStore.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
+        public async Task<IActionResult> Add(CategoryAddDto categoryDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var category = categoryAddDto.Adapt(categoryAddDto.Adapt<Category>());
+            var category = categoryDto.Adapt<Category>();
 
             await _categoryService.Add(category);
             return Ok(category);
@@ -66,16 +61,16 @@ namespace BookStore.API.Controllers
         [HttpPut("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(long id, CategoryEditDto editDto)
+        public async Task<IActionResult> Update(long id, CategoryEditDto categoryDto)
         {
-            if (id != editDto.Id) return BadRequest();
+            if (id != categoryDto.Id) return BadRequest();
 
             if (!ModelState.IsValid) return BadRequest();
 
-            var category = editDto.Adapt<Category>();
+            var category = categoryDto.Adapt<Category>();
             await _categoryService.Update(category);
             
-            return Ok(editDto);
+            return Ok(categoryDto);
         }
 
         [HttpDelete("{id:long}")]

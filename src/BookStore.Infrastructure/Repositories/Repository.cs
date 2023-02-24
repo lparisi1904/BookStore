@@ -34,8 +34,9 @@ namespace BookStore.Infrastructure.Repositories
 
         public virtual async Task<TEntity> GetById(long id)
         {
-            //    return await DbSet.FindAsync(id);
-            return await DbSet.SingleOrDefaultAsync(x => x.Id == id);
+            // return await DbSet.FindAsync(id);
+            return await DbSet
+                .SingleOrDefaultAsync(book => book.Id == id);
         }
 
         public virtual async Task Update(TEntity entity)
