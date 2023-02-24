@@ -5,11 +5,13 @@ namespace BookStore.API.Dtos.Book
     public class BookEditDto
     {
         [Key]
-
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage ="Il campo {0} è richiesto")]
-        public int CategoryId { get; set; }
+        public long CategoryId { get; set; }
+
+        [Required(ErrorMessage = "Il campo {0} è richiesto")]
+        public long PublisherId { get; set; }
 
         [Required(ErrorMessage ="Il campo {0} è richiesto")]
         [StringLength(100,ErrorMessage ="Il campo {0} deve essere tra {2} e {1} caratteri",MinimumLength =2)]

@@ -21,14 +21,14 @@ namespace BookStore.Infrastructure.Repositories
 
 
         //AsNoTracking: Se non è necessario aggiornare le entità recuperate dal database (readonly), deve essere usata una query con AsNoTracking
-        public async Task<List<Book>> GetAll() 
+        public override async Task<List<Book>> GetAll() 
             => await Db.Books
                 .AsNoTracking()
                 .Include(c => c.Category)
                 .OrderBy(c => c.Title)
                 .ToListAsync();
 
-        public async Task<Book> GetById(long id) 
+        public override async Task<Book> GetById(long id) 
             => await Db.Books
                 .AsNoTracking()
                 .Include(b => b.Category)
@@ -50,28 +50,6 @@ namespace BookStore.Infrastructure.Repositories
                            b.Description.Contains(searchValue) ||
                            b.Category.Name.Contains(searchValue))
                 .ToListAsync();
-        }
-
-
-        public Task Add(Book entity)
-        {
-            throw new NotImplementedException();
-        }
-
-       
-        public Task Remove(Book entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(Book entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿//using AutoMapper;
+﻿using AutoMapper;
 using BookStore.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Mapster;
 using BookStore.Domain.Models;
 using BookStore.API.Dtos.Book;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace BookStore.API.Controllers
 {
@@ -25,8 +26,6 @@ namespace BookStore.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            //return Ok(_mapper.Map<IEnumerable<BookResultDto>>(books));
-
             var books = await _bookService.GetAll();
 
             var result = books.Adapt<IEnumerable<BookResultDto>>();
@@ -34,18 +33,12 @@ namespace BookStore.API.Controllers
             return Ok(result);
         }
 
+
         [HttpGet("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(long id)
         {
-            //var book = await _bookService.GetById(id);
-
-            //if (book == null) return NotFound();
-
-            //return Ok(_mapper.Map<BookResultDto>(book));
-
-
             var book = await _bookService.GetById(id);
             if (book == null) { return NotFound(); }
 
@@ -84,16 +77,11 @@ namespace BookStore.API.Controllers
 
             var book = bookDto.Adapt(bookDto.Adapt<Book>());
 
-            return Ok(book);
+            var bookResult = await _bookService.Add(book);
 
-            //if (!ModelState.IsValid) return BadRequest();
+            if (bookResult == null) return BadRequest();
 
-            //var book = _mapper.Map<Book>(bookDto);
-            //var bookResult = await _bookService.Add(book);
-
-            //if (bookResult == null) return BadRequest();
-
-            //return Ok(_mapper.Map<Dtos.BookResultDto>(bookResult));
+            return Ok(book.Adapt<BookResultDto>());
         }
 
         [HttpPut("{id:long}")]
@@ -123,11 +111,11 @@ namespace BookStore.API.Controllers
         public async Task<IActionResult> Remove(long id)
         {
             var book = await _bookService.GetById(id);
-            if (book == null) return NotFound();
+            if (book == null) return NotFound("Libro non presente in archivio..");
 
             await _bookService.Remove(book);
 
-            return Ok();
+            return Ok("cancellato");
         }
 
         [HttpGet]

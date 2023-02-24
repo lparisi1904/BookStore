@@ -4,7 +4,7 @@ Web API Project using .NET 7.0
 ## Technologies
 - .NET 7
 - Entity Framework 7
-- AutoMapper
+- Mapster Mapper
 - Swagger
 - SQL Server
 

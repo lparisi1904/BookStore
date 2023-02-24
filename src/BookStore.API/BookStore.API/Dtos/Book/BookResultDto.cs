@@ -2,10 +2,11 @@
 {
     public class BookResultDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        public int CategoryId { get; set; }
-
+        public long CategoryId { get; set; }
+        public long PublisherId { get; set; }
+        
         public string CategoryName { get; set; }
 
         public string Title { get; set; }
