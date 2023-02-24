@@ -1,4 +1,5 @@
 ﻿using BookStore.API.Dtos;
+using BookStore.API.Dtos.Category;
 using BookStore.Domain.Interfaces;
 using BookStore.Domain.Models;
 using BookStore.Domain.Services;
@@ -29,7 +30,7 @@ namespace BookStore.API.Controllers
             //return Ok(_mapper.Map<IEnumerable<CategoryResultDto>>(categories));
 
             var categories = await _categoryService.GetAll();
-            var listCategories = categories.Adapt<IEnumerable<CategoryResultDto>>();
+            var listCategories = categories.Adapt<IEnumerable<Dtos.CategoryResultDto>>();
 
             return Ok(listCategories);
         }
@@ -44,11 +45,55 @@ namespace BookStore.API.Controllers
             if (category == null) return NotFound("Categoria non presente.");
 
             // Map Entity to Dto..
-            var categoryDto = category.Adapt<CategoryResultDto>();
+            var categoryDto = category.Adapt<Dtos.CategoryResultDto>();
 
             return Ok(categoryDto);
         }
 
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
+        {
+            if (!ModelState.IsValid) return BadRequest();
 
+            var category = categoryAddDto.Adapt(categoryAddDto.Adapt<Category>());
+
+            await _categoryService.Add(category);
+            return Ok(category);
+        }
+
+        [HttpPut("{id:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Update(long id, CategoryEditDto editDto)
+        {
+            if (id != editDto.Id) return BadRequest();
+
+            if (!ModelState.IsValid) return BadRequest();
+
+            var category = editDto.Adapt<Category>();
+            await _categoryService.Update(category);
+            
+            return Ok(editDto);
+        }
+
+        [HttpDelete("{id:long}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var category = await _categoryService.GetById(id);
+
+            if (category == null) return NotFound();
+
+           var isDeleted = await _categoryService.Remove(category);
+
+           if (!isDeleted) return BadRequest();
+
+           var CategoryDto = category.Adapt<Dtos.CategoryResultDto>();
+
+           return Ok(CategoryDto);
+        }
     }
 }
