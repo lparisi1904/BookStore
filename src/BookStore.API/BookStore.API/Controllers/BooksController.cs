@@ -111,14 +111,12 @@ namespace BookStore.API.Controllers
         [Route("search/{bookTitle}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<Book>>> Search(string bookName)
+        public async Task<ActionResult<List<Book>>> Search(string bookTitle)
         {
-            //var books = _mapper.Map<List<Book>>(await _bookService.Search(bookName));
-
-            var book = await _bookService.Search(bookName);
+            var book = await _bookService.Search(bookTitle);
             var books = book.Adapt<List<Book>>();
 
-            if (books == null || books.Any()) 
+            if (books == null || !books.Any())  
                 return NotFound("Nessun libro è stato trovato.");
 
             return Ok(books);

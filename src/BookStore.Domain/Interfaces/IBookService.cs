@@ -15,7 +15,7 @@ namespace BookStore.Domain.Interfaces
         Task<Book> Update(Book book);
         Task<Book> Remove(Book book);
         Task<IEnumerable<Book>> GetBooksByCategory(long categoryId);
-        Task<IEnumerable<Book>> Search(string bookName);
+        Task<IEnumerable<Book>> Search(string bookTitle);
         Task<IEnumerable<Book>> SearchBookWithCategory(string searchValue);
     }
 }
