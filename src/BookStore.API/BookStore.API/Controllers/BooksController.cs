@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore.Domain.Models;
 using BookStore.API.Dtos.Book;
 using Mapster;
-
+using BookStore.API.Utils;
+using static BookStore.API.Utils.Enums;
 
 namespace BookStore.API.Controllers
 {
@@ -25,7 +26,8 @@ namespace BookStore.API.Controllers
         {
             var books = await _bookService.GetAll();
 
-            if (!books.Any() || books == null) return NotFound();
+            if (!books.Any() || books == null) 
+                return NotFound(MessageCode.BookNotFound.GetDescription());
 
             var result = books.Adapt<IEnumerable<BookResultDto>>();
 
@@ -40,11 +42,14 @@ namespace BookStore.API.Controllers
         {
             var book = await _bookService.GetById(id);
 
-            if (book == null) { return NotFound(); }
+            if (book == null) { 
+                return NotFound(MessageCode.BookNotFound.GetDescription()); 
+            };
 
             var result = book.Adapt<BookResultDto>();
 
             return Ok(result);
+           // return Ok(MessageCode.CodeSuccess.GetDescription());
         }
 
         [HttpGet]
@@ -55,7 +60,9 @@ namespace BookStore.API.Controllers
         {
             var books = await _bookService.GetBooksByCategory(categoryId);
 
-            if (!books.Any()) { return NotFound(); }
+            if (!books.Any()) { 
+                return NotFound(MessageCode.BookNotFound.GetDescription()); 
+            }
 
             var result = books.Adapt<IEnumerable<BookResultDto>>();
 
@@ -71,9 +78,11 @@ namespace BookStore.API.Controllers
 
             var book = bookDto.Adapt(bookDto.Adapt<Book>());
 
-            var bookResult = await _bookService.Add(book);
+            var bookAdded = await _bookService.Add(book);
 
-            if (bookResult == null) return BadRequest();
+            if (bookAdded == null) 
+                return BadRequest(MessageCode.CategorySuccessOK.GetDescription());
+             
 
             return Ok(book.Adapt<BookResultDto>());
         }
@@ -84,13 +93,15 @@ namespace BookStore.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(long id, BookEditDto bookDto)
         {
-            if (id != bookDto.Id) return BadRequest();
+            if (id != bookDto.Id) 
+                return BadRequest(MessageCode.BookNotMatch.GetDescription());
 
             if (!ModelState.IsValid) return BadRequest();
 
             await _bookService.Update(bookDto.Adapt<Book>());
 
-            return Ok(bookDto);
+            //return Ok(bookDto);
+            return Ok(MessageCode.BookSuccessUpdate.GetDescription());
         }
 
 
@@ -100,11 +111,12 @@ namespace BookStore.API.Controllers
         public async Task<IActionResult> Remove(long id)
         {
             var book = await _bookService.GetById(id);
-            if (book == null) return NotFound("Libro non presente in archivio..");
+            if (book == null) return 
+                    NotFound(MessageCode.BookNotFound.GetDescription());
 
             await _bookService.Remove(book);
 
-            return Ok("Libro cancellato correttamente.");
+            return Ok(MessageCode.BookSuccessDeleted.GetDescription());
         }
 
         [HttpGet]
@@ -117,7 +129,7 @@ namespace BookStore.API.Controllers
             var books = book.Adapt<List<Book>>();
 
             if (books == null || !books.Any())  
-                return NotFound("Nessun libro è stato trovato.");
+                return NotFound(MessageCode.BookNotFound.GetDescription());
 
             return Ok(books);
         }
@@ -132,8 +144,8 @@ namespace BookStore.API.Controllers
 
             var books = searchBook.Adapt<List<Book>>();
 
-            if (!books.Any()) 
-                return NotFound("Nessun libro trovato");
+            if (!books.Any())
+                return NotFound(MessageCode.BookNotFound.GetDescription());
 
             return Ok(books.Adapt<IEnumerable<BookResultDto>>());
         }

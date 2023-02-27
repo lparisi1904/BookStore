@@ -3,6 +3,7 @@ using BookStore.Domain.Interfaces;
 using BookStore.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Mapster;
+using static BookStore.API.Utils.Enums;
 
 
 namespace BookStore.API.Controllers
@@ -37,7 +38,8 @@ namespace BookStore.API.Controllers
         {
             var category = await _categoryService.GetById(id);
 
-            if (category == null) return NotFound("Categoria non presente.");
+            if (category == null) 
+                return NotFound(MessageCode.CategoryNotFound.GetDescription());
 
             // Map Entity to Dto..
             var categoryDto = category.Adapt<Dtos.CategoryResultDto>();
@@ -63,7 +65,8 @@ namespace BookStore.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update(long id, CategoryEditDto categoryDto)
         {
-            if (id != categoryDto.Id) return BadRequest();
+            if (id != categoryDto.Id) 
+                return BadRequest(MessageCode.CategoryNotMatch.GetDescription());
 
             if (!ModelState.IsValid) return BadRequest();
 
@@ -81,11 +84,13 @@ namespace BookStore.API.Controllers
         {
             var category = await _categoryService.GetById(id);
 
-            if (category == null) return NotFound();
+            if (category == null) 
+                return NotFound(MessageCode.CategoryNotFound.GetDescription());
 
            var isDeleted = await _categoryService.Remove(category);
 
-           if (!isDeleted) return BadRequest();
+           if (!isDeleted) 
+                return BadRequest(MessageCode.CodeDeletedKO.GetDescription());
 
            var CategoryDto = category.Adapt<Dtos.CategoryResultDto>();
 
@@ -99,15 +104,14 @@ namespace BookStore.API.Controllers
         {
             var listCategories = await _categoryService.Search(searchCategory);
 
-            if (listCategories != null && listCategories.Count() != 0)
+            if (listCategories != null && listCategories.Any())
             {
                 var categories = listCategories.Adapt<IEnumerable<Dtos.CategoryResultDto>>();
-
                 
                 return Ok(categories);
             }
 
-            return NotFound("Nessuna categoria trovata.");
+            return NotFound(MessageCode.CategoryNotFound.GetDescription());
         }
     }
 }
