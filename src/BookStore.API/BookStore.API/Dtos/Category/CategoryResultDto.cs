@@ -2,10 +2,10 @@
 
 namespace BookStore.API.Dtos.Category
 {
-    public record class CategoryResultDto
+    public record CategoryResultDto
     {
         [Key]
-        public int Id { get; set; }
-        public string? Name { get; set; }
+        public int Id { get; init; }
+        public string? Name { get; init; }
     }
 }

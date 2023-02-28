@@ -2,20 +2,20 @@
 
 namespace BookStore.API.Dtos.Book
 {
-    public record class BookResultDto
+    public record BookResultDto
     {
         [Key]
-        public long Id { get; set; }
+        public long Id { get; init; }
 
-        public long CategoryId { get; set; }
-        public long PublisherId { get; set; }
-        
-        public string CategoryName { get; set; }
+        public long CategoryId { get; init; }
+        public long PublisherId { get; init; }
 
-        public string Title { get; set; }
+        public string CategoryName { get; init; }
 
-        public string Author { get; set; }
+        public string Title { get; init; }
 
-        public string Description { get; set; }
+        public string Author { get; init; }
+
+        public string Description { get; init; }
     }
 }

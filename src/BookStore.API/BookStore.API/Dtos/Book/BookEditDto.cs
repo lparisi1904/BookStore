@@ -2,25 +2,25 @@
 
 namespace BookStore.API.Dtos.Book
 {
-    public record class BookEditDto
+    public record BookEditDto
     {
         [Key]
-        public long Id { get; set; }
+        public long Id { get; init; }
 
         [Required(ErrorMessage ="Il campo {0} è richiesto")]
-        public long CategoryId { get; set; }
+        public long CategoryId { get; init; }
 
         [Required(ErrorMessage = "Il campo {0} è richiesto")]
-        public long PublisherId { get; set; }
+        public long PublisherId { get; init; }
 
         [Required(ErrorMessage ="Il campo {0} è richiesto")]
         [StringLength(100,ErrorMessage ="Il campo {0} deve essere tra {2} e {1} caratteri",MinimumLength =2)]
-        public string Title { get; set; }
+        public string Title { get; init; }
 
         [Required(ErrorMessage ="Il campo {0} è richiesto")]
         [StringLength(100,ErrorMessage = "Il campo {0} deve essere tra {2} e {1} caratteri", MinimumLength = 2)]
-        public string Author { get; set; }
+        public string Author { get; init; }
 
-        public string Description { get; set; }
+        public string Description { get; init; }
     }
 }
