@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.UnitTest", "UnitT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi", "Analisi", "{E1FC3262-C45D-41C5-8934-12415B9E166A}"
 	ProjectSection(SolutionItems) = preProject
-		AnalisiStrutturaleCodice.txt = AnalisiStrutturaleCodice.txt
+		AnalisiStrutturale.txt = AnalisiStrutturale.txt
 	EndProjectSection
 EndProject
 Global

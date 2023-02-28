@@ -1,5 +1,5 @@
-ANALISI STRUTTURALE
---------------------
+ANALISI STRUTTURALE DEL CODICE
+------------------------------
 
 - Il modello Repository:
 

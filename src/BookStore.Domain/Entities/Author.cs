@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using BookStore.Domain.Common;
 
-namespace BookStore.Domain.Models;
+namespace BookStore.Domain.Entities;
 
-public partial class Author : BaseEntity
+public partial class Author
 {
-    //public long Id { get; set; }
+    public long Id { get; set; }
 
     public string Name { get; set; } = null!;
 }

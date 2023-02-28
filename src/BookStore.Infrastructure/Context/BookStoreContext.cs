@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookStore.Domain.Models;
+namespace BookStore.Domain.Entities;
 
 public partial class BookStoreContext : DbContext
 {
@@ -42,24 +42,24 @@ public partial class BookStoreContext : DbContext
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Book__3214EC0706C7A058");
+            entity.HasKey(e => e.Id).HasName("PK__Book__3214EC07442FC9FA");
 
             entity.ToTable("Book");
 
             entity.Property(e => e.Author).HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.Title).HasMaxLength(100);
-           // entity.Property(e => e.DateCreated).HasColumnType("DateTime");
+            entity.Property(e=> e.YearBook).HasColumnType("int");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Books)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Book__CategoryId__3A81B327");
+                .HasConstraintName("FK__Book__CategoryId__5629CD9C");
 
             entity.HasOne(d => d.Publisher).WithMany(p => p.Books)
                 .HasForeignKey(d => d.PublisherId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Book__PublisherI__3B75D760");
+                .HasConstraintName("FK__Book__PublisherI__571DF1D5");
         });
 
         modelBuilder.Entity<Category>(entity =>

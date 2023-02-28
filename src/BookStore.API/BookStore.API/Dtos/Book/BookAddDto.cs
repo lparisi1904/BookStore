@@ -1,4 +1,4 @@
-﻿using BookStore.Domain.Models;
+﻿using BookStore.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.API.Dtos.Book
@@ -19,8 +19,7 @@ namespace BookStore.API.Dtos.Book
         [StringLength(100, ErrorMessage ="Il campo {0} deve essere tra {2} e {1} caratteri", MinimumLength =2)]
         public string Author { get; init; }
 
-        //[Required(ErrorMessage = "Il campo {0} è richiesto")]
-        //public DateTime DateCreated { get; init; } = DateTime.Now; 
+        public int YearBook { get; init; }
 
         public string Description { get; init; }
             

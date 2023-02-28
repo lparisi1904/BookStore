@@ -1,8 +1,8 @@
-﻿using System;
+﻿using BookStore.Domain.Common;
+using System;
 using System.Collections.Generic;
-using BookStore.Domain.Common;
 
-namespace BookStore.Domain.Models;
+namespace BookStore.Domain.Entities;
 
 public partial class Publisher: BaseEntity
 {

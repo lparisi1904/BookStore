@@ -1,5 +1,4 @@
 using BookStore.Domain.Interfaces;
-using BookStore.Domain.Models;
 using BookStore.Domain.Services;
 using BookStore.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System;
 using AutoMapper;
-
+using BookStore.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

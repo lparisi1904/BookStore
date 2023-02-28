@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BookStore.Domain.Models;
+﻿using BookStore.Domain.Entities;
 
 namespace BookStore.Domain.Interfaces
 {

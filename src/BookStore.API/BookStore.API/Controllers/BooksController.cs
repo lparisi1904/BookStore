@@ -1,12 +1,12 @@
 ﻿using BookStore.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using BookStore.Domain.Models;
 using BookStore.API.Dtos.Book;
 using Mapster;
 using BookStore.API.Utils;
 using static BookStore.API.Utils.Enums;
 using System.Net;
 using Stripe;
+using BookStore.Domain.Entities;
 
 namespace BookStore.API.Controllers
 {
@@ -35,7 +35,6 @@ namespace BookStore.API.Controllers
 
             return Ok(result);
         }
-
 
         [HttpGet("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

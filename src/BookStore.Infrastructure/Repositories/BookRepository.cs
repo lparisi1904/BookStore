@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.Domain.Entities;
 using BookStore.Domain.Interfaces;
-using BookStore.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Book = BookStore.Domain.Entities.Book;
 
 namespace BookStore.Infrastructure.Repositories
 {

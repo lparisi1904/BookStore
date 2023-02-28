@@ -15,6 +15,7 @@ namespace BookStore.API.Dtos.Book
         public string Title { get; init; }
 
         public string Author { get; init; }
+        public int YearBook { get; init; } 
 
         public string Description { get; init; }
     }

@@ -1,9 +1,9 @@
 ﻿using BookStore.API.Dtos.Category;
 using BookStore.Domain.Interfaces;
-using BookStore.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Mapster;
 using BookStore.API.Utils;
+using BookStore.Domain.Entities;
 
 namespace BookStore.API.Controllers
 {

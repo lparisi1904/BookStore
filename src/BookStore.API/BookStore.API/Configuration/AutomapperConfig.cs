@@ -2,7 +2,7 @@
 using AutoMapper;
 using BookStore.API.Dtos.Book;
 using BookStore.API.Dtos.Category;
-using BookStore.Domain.Models;
+using BookStore.Domain.Entities;
 using Mapster;
 
 

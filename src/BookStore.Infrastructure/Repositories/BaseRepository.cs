@@ -1,8 +1,8 @@
 ﻿using BookStore.Domain.Interfaces;
-using BookStore.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using BookStore.Domain.Common;
+using BookStore.Domain.Entities;
 
 namespace BookStore.Infrastructure.Repositories
 {
@@ -53,7 +53,8 @@ namespace BookStore.Infrastructure.Repositories
         // nella scrittura / aggornamento NON usare
         public async Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate)
         {
-            return await DbSet.AsNoTracking()
+            return await DbSet
+                .AsNoTracking()
                 .Where(predicate)
                 .ToListAsync();
         }
