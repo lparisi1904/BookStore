@@ -20,7 +20,7 @@ Web API Project using .NET 7.0
     - Dtos
 
   - Domain layer
-    - Models
+    - Entities
     - Interfaces
     - Services
     

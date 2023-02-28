@@ -1,6 +1,5 @@
---------------------------------
-ANALISI STRUTTURALE DEL CODICE
---------------------------------
+ANALISI STRUTTURALE
+--------------------
 
 - Il modello Repository:
 
@@ -23,20 +22,26 @@ Utilizzando questo modello, avremo una classe generica per il repository con le 
 
 
 - Livello di Domain:
-In questo livello avremo le interfacce e i servizi. Utilizzeremo le Interfacce per lavorare con Dependency injection, ovvero la lettera D dei principi SOLID, ovvero Dependency Inversion Principle (noto anche come IoC — Inversion of Control). Non spiegherò SOLID per ora perché non è il focus di questo articolo, ma è bene capire cosa dice questo principio:
+In questo livello avremo le interfacce e i servizi. Utilizzeremo le Interfacce per lavorare con Dependency injection, ovvero la lettera D dei principi SOLID, ovvero Dependency Inversion Principle (noto anche come IoC — Inversion of Control). 
 
-I moduli di alto livello non dovrebbero dipendere da moduli di basso livello. Entrambi dovrebbero dipendere da astrazioni. Le astrazioni non dovrebbero dipendere dai dettagli. I dettagli dovrebbero dipendere dalle astrazioni.
+I moduli di alto livello non dovrebbero dipendere da moduli di basso livello. Entrambi dovrebbero dipendere da astrazioni. 
+Le astrazioni non dovrebbero dipendere dai dettagli. 
+I dettagli dovrebbero dipendere dalle astrazioni.
 IMPORTANTE:
 Significa che non dovremmo dipendere da un'implementazione (una classe concreta) ma dobbiamo dipendere da un'astrazione (questa può essere un'interfaccia o qualsiasi altro modo di astrazione). In questo modo, se qualcosa cambia nella classe, le altre classi non ne risentiranno perché dipende da un'astrazione.
 
 
 - Services
-Le classi Servizi sono dove aggiungeremo le regole di business dell'applicazione. Queste classi si trovano tra il controller e il repository. Il livello dell'applicazione non dovrebbe avere accesso al livello dell'infrastruttura, quindi utilizzeremo le classi di servizi nel livello del dominio come intermediario tra i controller nel livello dell'applicazione e i repository nel livello dell'infrastruttura. Inoltre, non dovremmo aggiungere regole di business nel controller, quindi i controller chiameranno i servizi in cui concentreremo le regole di business ei servizi chiameranno il repository.
+Le classi "Servizi" sono dove aggiungeremo le "regole di business" dell'applicazione. 
+Queste classi si trovano tra il Controller e il Repository. 
+Il livello dell'Applicazione non dovrebbe avere accesso al livello dell'Infrastruttura, quindi utilizzeremo le classi di SERVIZI nel livello di Dominio 
+come intermediario tra i Controller nel livello dell'Applicazione e i Repository nel livello Infrastruttura. 
+Inoltre, non dovremmo aggiungere regole di "business" nel Controller, ma saranno i Controller che chiameranno i "Servizi" in cui concentreremo le regole di business e i servizi chiameranno il Repository.
 
 
 - Interfaces:
 
-Interfaccia generica (IRepository ):
+Interfaccia generica (IRepository):
 Questa interfaccia è per la classe Repository generica che creeremo nel livello Infrastructure. Per questa classe abbiamo bisogno della firma per l'operazione CRUD (Create, Read, Update, Delete) e anche di un metodo per salvare le modifiche e per la ricerca
 
 Nella classe Repository che andremo a creare nel progetto Infrastructure, implementeremo questa interfaccia. 
