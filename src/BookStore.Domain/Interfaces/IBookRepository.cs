@@ -4,7 +4,7 @@ using BookStore.Domain.Models;
 
 namespace BookStore.Domain.Interfaces
 {
-    public interface IBookRepository : IRepository<Book>
+    public interface IBookRepository : IBaseRepository<Book>
     {
         /// <summary>
         /// Per la classe BookRepository non utilizzeremo GetById e GetAll della classe GENERICA, perché vogliamo restituire la categoria del libro in quei metodi. 

@@ -5,6 +5,8 @@ using BookStore.API.Dtos.Book;
 using Mapster;
 using BookStore.API.Utils;
 using static BookStore.API.Utils.Enums;
+using System.Net;
+using Stripe;
 
 namespace BookStore.API.Controllers
 {
@@ -22,12 +24,12 @@ namespace BookStore.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllBooks()
         {
             var books = await _bookService.GetAll();
 
-            if (!books.Any() || books == null) 
-                return NotFound(MessageCode.BookNotFound.GetDescription());
+            if (!books.Any() || books == null)
+                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
 
             var result = books.Adapt<IEnumerable<BookResultDto>>();
 
@@ -38,18 +40,18 @@ namespace BookStore.API.Controllers
         [HttpGet("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(long id)
+        public async Task<IActionResult> GetBookById(long id)
         {
             var book = await _bookService.GetById(id);
 
             if (book == null) { 
-                return NotFound(MessageCode.BookNotFound.GetDescription()); 
+                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription()); 
             };
 
             var result = book.Adapt<BookResultDto>();
 
             return Ok(result);
-           // return Ok(MessageCode.CodeSuccess.GetDescription());
+           // return Ok(StatusCode.CodeSuccess.GetDescription());
         }
 
         [HttpGet]
@@ -61,7 +63,7 @@ namespace BookStore.API.Controllers
             var books = await _bookService.GetBooksByCategory(categoryId);
 
             if (!books.Any()) { 
-                return NotFound(MessageCode.BookNotFound.GetDescription()); 
+                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription()); 
             }
 
             var result = books.Adapt<IEnumerable<BookResultDto>>();
@@ -72,7 +74,7 @@ namespace BookStore.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add(BookAddDto bookDto)
+        public async Task<IActionResult> AddBook(BookAddDto bookDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -81,7 +83,7 @@ namespace BookStore.API.Controllers
             var bookAdded = await _bookService.Add(book);
 
             if (bookAdded == null) 
-                return BadRequest(MessageCode.CategorySuccessOK.GetDescription());
+                return base.BadRequest(Enums.StatusCode.CategorySuccessOK.GetDescription());
              
 
             return Ok(book.Adapt<BookResultDto>());
@@ -91,45 +93,45 @@ namespace BookStore.API.Controllers
         [HttpPut("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(long id, BookEditDto bookDto)
+        public async Task<IActionResult> UpdateBook(long id, BookEditDto bookDto)
         {
             if (id != bookDto.Id) 
-                return BadRequest(MessageCode.BookNotMatch.GetDescription());
+                return base.BadRequest(Enums.StatusCode.BookNotMatch.GetDescription());
 
             if (!ModelState.IsValid) return BadRequest();
 
             await _bookService.Update(bookDto.Adapt<Book>());
 
             //return Ok(bookDto);
-            return Ok(MessageCode.BookSuccessUpdate.GetDescription());
+            return base.Ok(Enums.StatusCode.BookSuccessUpdate.GetDescription());
         }
 
 
         [HttpDelete("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Remove(long id)
+        public async Task<IActionResult> RemoveBook(long id)
         {
             var book = await _bookService.GetById(id);
             if (book == null) return 
-                    NotFound(MessageCode.BookNotFound.GetDescription());
+                    base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
 
             await _bookService.Remove(book);
 
-            return Ok(MessageCode.BookSuccessDeleted.GetDescription());
+            return base.Ok(Enums.StatusCode.BookSuccessDeleted.GetDescription());
         }
 
         [HttpGet]
         [Route("search/{bookTitle}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<Book>>> Search(string bookTitle)
+        public async Task<ActionResult<List<Book>>> SearchBook(string bookTitle)
         {
             var book = await _bookService.Search(bookTitle);
             var books = book.Adapt<List<Book>>();
 
             if (books == null || !books.Any())  
-                return NotFound(MessageCode.BookNotFound.GetDescription());
+                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
 
             return Ok(books);
         }
@@ -145,7 +147,7 @@ namespace BookStore.API.Controllers
             var books = searchBook.Adapt<List<Book>>();
 
             if (!books.Any())
-                return NotFound(MessageCode.BookNotFound.GetDescription());
+                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
 
             return Ok(books.Adapt<IEnumerable<BookResultDto>>());
         }

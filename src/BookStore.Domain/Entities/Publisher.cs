@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BookStore.Domain.Common;
 
 namespace BookStore.Domain.Models;
 

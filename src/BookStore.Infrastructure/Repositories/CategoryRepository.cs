@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Infrastructure.Repositories
 {
-    public class CategoryRepository: Repository<Category> , ICategoryRepository
+    public class CategoryRepository: BaseRepository<Category> , ICategoryRepository
     {
         public CategoryRepository(BookStoreContext context) :base(context) { }
 

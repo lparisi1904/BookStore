@@ -40,7 +40,8 @@ namespace BookStore.Domain.Services
 
         public async Task<Category> Update(Category category)
         {
-            if (_categoryRepository.Search(c => c.Name == category.Name && c.Id != category.Id).Result.Any())
+            if (_categoryRepository
+                .Search(cat => cat.Name == category.Name && cat.Id != category.Id).Result.Any())
                 return null;
 
             await _categoryRepository.Update(category);
@@ -58,7 +59,9 @@ namespace BookStore.Domain.Services
 
         public async Task<IEnumerable<Category>> Search(string categoryName)
         {
-            return await _categoryRepository.Search(c => c.Name.Contains(categoryName));
+            return await _categoryRepository
+                .Search(cat => cat.Name
+                .Contains(categoryName));
         }
 
         public void Dispose()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.Domain.Interfaces
 {
-    public interface ICategoryRepository : IRepository<Category>
+    public interface ICategoryRepository : IBaseRepository<Category>
     {
 
     }

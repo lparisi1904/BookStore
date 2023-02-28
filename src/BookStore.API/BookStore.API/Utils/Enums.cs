@@ -7,7 +7,8 @@ namespace BookStore.API.Utils
     {
         public static string GetDescription(this Enum value)
         {
-            FieldInfo fi = value.GetType().GetField(value.ToString());
+            FieldInfo fi = value.GetType()
+                .GetField(value.ToString());
 
             DescriptionAttribute[] attributes =
                 (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
@@ -18,7 +19,7 @@ namespace BookStore.API.Utils
                 return value.ToString();
         }
 
-        public enum MessageCode
+        public enum StatusCode
         {
             // Books codes....
             [Description("Libro non trovato.")]
@@ -30,7 +31,7 @@ namespace BookStore.API.Utils
             [Description("Libro cancellato correttamente.")]
             BookSuccessDeleted = 300,
 
-            [Description("Codice non corrispondente ad id in archivio.")]
+            [Description("Codice (id) non corrispondente ad id in archivio.")]
             BookNotMatch = 400,
 
             [Description("Stato operazione OK.")]
@@ -41,7 +42,6 @@ namespace BookStore.API.Utils
 
 
             // Categories codes...
-            // Books codes....
             [Description("Categoria non trovata.")]
             CategoryNotFound = 100,
 
@@ -51,14 +51,44 @@ namespace BookStore.API.Utils
             [Description("Categoria cancellata correttamente.")]
             CategorySuccessDeleted = 300,
 
-            [Description("Codice non corrispondente ad id in archivio.")]
+            [Description("Codice (id) non corrispondente ad id in archivio.")]
             CategoryNotMatch = 400,
 
             [Description("Stato operazione OK.")]
             CategorySuccessOK = 500,
 
             [Description("Cancellazione Categoria non riuscita.")]
-            CodeDeletedKO = 600
+            CategoryDeletedKO = 600
+        }
+
+        public enum Genre
+        {
+            Fantasy,
+            Adventure,
+            Romance,
+            Contemporary,
+            Dystopian,
+            Mystery,
+            Horror,
+            Thriller,
+            Paranormal,
+            Historical_fiction,
+            Science_Fiction,
+            Childrens,
+            Memoir,
+            Cooking,
+            Art,
+            Self_help,
+            Personal,
+            Development,
+            Motivational,
+            Health,
+            History,
+            Travel,
+            How_to,
+            Families_Relationships,
+            Humor,
+            Biography
         }
     }
 }

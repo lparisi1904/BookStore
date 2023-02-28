@@ -3,8 +3,7 @@ using BookStore.Domain.Interfaces;
 using BookStore.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Mapster;
-using static BookStore.API.Utils.Enums;
-
+using BookStore.API.Utils;
 
 namespace BookStore.API.Controllers
 {
@@ -21,12 +20,12 @@ namespace BookStore.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _categoryService.GetAll();
 
             // Map Entity to Dto..
-            var listCategoriesDto = categories.Adapt<IEnumerable<Dtos.CategoryResultDto>>();
+            var listCategoriesDto = categories.Adapt<IEnumerable<CategoryResultDto>>();
 
             return Ok(listCategoriesDto);
         }
@@ -34,15 +33,15 @@ namespace BookStore.API.Controllers
         [HttpGet("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(long id)
+        public async Task<IActionResult> GetCategoryById(long id)
         {
             var category = await _categoryService.GetById(id);
 
             if (category == null) 
-                return NotFound(MessageCode.CategoryNotFound.GetDescription());
+                return base.NotFound(Enums.StatusCode.CategoryNotFound.GetDescription());
 
             // Map Entity to Dto..
-            var categoryDto = category.Adapt<Dtos.CategoryResultDto>();
+            var categoryDto = category.Adapt<CategoryResultDto>();
 
             return Ok(categoryDto);
         }
@@ -50,7 +49,7 @@ namespace BookStore.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add(CategoryAddDto categoryDto)
+        public async Task<IActionResult> AddCategory(CategoryAddDto categoryDto)
         {
             if (!ModelState.IsValid) return BadRequest();
 
@@ -63,10 +62,10 @@ namespace BookStore.API.Controllers
         [HttpPut("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(long id, CategoryEditDto categoryDto)
+        public async Task<IActionResult> UpdateCategory(long id, CategoryEditDto categoryDto)
         {
             if (id != categoryDto.Id) 
-                return BadRequest(MessageCode.CategoryNotMatch.GetDescription());
+                return base.BadRequest(Enums.StatusCode.CategoryNotMatch.GetDescription());
 
             if (!ModelState.IsValid) return BadRequest();
 
@@ -80,19 +79,19 @@ namespace BookStore.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> DeleteCategory(long id)
         {
             var category = await _categoryService.GetById(id);
 
             if (category == null) 
-                return NotFound(MessageCode.CategoryNotFound.GetDescription());
+                return base.NotFound(Enums.StatusCode.CategoryNotFound.GetDescription());
 
            var isDeleted = await _categoryService.Remove(category);
 
            if (!isDeleted) 
-                return BadRequest(MessageCode.CodeDeletedKO.GetDescription());
+                return base.BadRequest(Enums.StatusCode.CategoryDeletedKO.GetDescription());
 
-           var CategoryDto = category.Adapt<Dtos.CategoryResultDto>();
+           var CategoryDto = category.Adapt<CategoryResultDto>();
 
            return Ok(CategoryDto);
         }
@@ -100,18 +99,18 @@ namespace BookStore.API.Controllers
         [HttpGet("Search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<Dtos.CategoryResultDto>>> Search(string searchCategory)
+        public async Task<ActionResult<List<CategoryResultDto>>> SearchCategory(string searchCategory)
         {
             var listCategories = await _categoryService.Search(searchCategory);
 
             if (listCategories != null && listCategories.Any())
             {
-                var categories = listCategories.Adapt<IEnumerable<Dtos.CategoryResultDto>>();
+                var categories = listCategories.Adapt<IEnumerable<CategoryResultDto>>();
                 
                 return Ok(categories);
             }
 
-            return NotFound(MessageCode.CategoryNotFound.GetDescription());
+            return base.NotFound(Enums.StatusCode.CategoryNotFound.GetDescription());
         }
     }
 }

@@ -49,6 +49,7 @@ public partial class BookStoreContext : DbContext
             entity.Property(e => e.Author).HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.Title).HasMaxLength(100);
+           // entity.Property(e => e.DateCreated).HasColumnType("DateTime");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Books)
                 .HasForeignKey(d => d.CategoryId)

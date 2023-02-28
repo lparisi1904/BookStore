@@ -2,7 +2,7 @@
 
 namespace BookStore.API.Dtos.Book
 {
-    public class BookEditDto
+    public record class BookEditDto
     {
         [Key]
         public long Id { get; set; }

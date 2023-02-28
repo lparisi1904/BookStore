@@ -1,12 +1,4 @@
-﻿//using BookStore.Domain.Interfaces;
-//using BookStore.Domain.Models;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Linq.Expressions;
-//using System.Text;
-//using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookStore.Domain.Interfaces;
@@ -15,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Infrastructure.Repositories
 {
-    public class BookRepository : Repository<Book>, IBookRepository
+    public class BookRepository : BaseRepository<Book>, IBookRepository
     {
         public BookRepository(BookStoreContext context) : base(context) { }
 
-
-        //AsNoTracking: Se non è necessario aggiornare le entità recuperate dal database (readonly), deve essere usata una query con AsNoTracking
+        //AsNoTracking: =>
+        //Se non è necessario aggiornare le entità recuperate dal database (readonly), deve essere usata una query con AsNoTracking
         public override async Task<List<Book>> GetAll() 
             => await Db.Books
                 .AsNoTracking()

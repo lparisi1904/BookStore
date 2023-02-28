@@ -1,7 +1,10 @@
-﻿namespace BookStore.API.Dtos.Book
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BookStore.API.Dtos.Book
 {
-    public class BookResultDto
+    public record class BookResultDto
     {
+        [Key]
         public long Id { get; set; }
 
         public long CategoryId { get; set; }
