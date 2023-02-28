@@ -1,0 +1,133 @@
+--------------------------------
+ANALISI STRUTTURALE DEL CODICE
+--------------------------------
+
+- Il modello Repository:
+
+Alcuni vantaggi di questo modello sono:
+
+Consente l'isolamento del livello aziendale (il livello del dominio) del livello del database (il livello dell'infrastruttura).
+Consente la modifica di un database in futuro (se necessario) senza avere molto impatto sul sistema
+Consenti accoppiamento libero tra le classi
+Hai tutto il codice per accedere al database in un unico posto
+Semplifica l'implementazione del test unitario
+Fornire un'architettura flessibile
+Facile da mantenere
+
+dalla documentazione Microsoft :
+
+I repository sono classi o componenti che incapsulano la logica richiesta per accedere alle origini dati. Centralizzano le funzionalità di accesso ai dati comuni, fornendo una migliore manutenibilità e disaccoppiando l'infrastruttura o la tecnologia utilizzata per accedere ai database dal livello del modello di dominio.
+
+Utilizzando questo modello, avremo una classe generica per il repository con le operazioni di base (Aggiungi, Ottieni, GetById, Rimuovi, Aggiorna, Cerca, Salva) e avremo classi specifiche per azioni specifiche di cui abbiamo bisogno, che va oltre le operazioni di base. 
+
+
+
+- Livello di Domain:
+In questo livello avremo le interfacce e i servizi. Utilizzeremo le Interfacce per lavorare con Dependency injection, ovvero la lettera D dei principi SOLID, ovvero Dependency Inversion Principle (noto anche come IoC — Inversion of Control). Non spiegherò SOLID per ora perché non è il focus di questo articolo, ma è bene capire cosa dice questo principio:
+
+I moduli di alto livello non dovrebbero dipendere da moduli di basso livello. Entrambi dovrebbero dipendere da astrazioni. Le astrazioni non dovrebbero dipendere dai dettagli. I dettagli dovrebbero dipendere dalle astrazioni.
+IMPORTANTE:
+Significa che non dovremmo dipendere da un'implementazione (una classe concreta) ma dobbiamo dipendere da un'astrazione (questa può essere un'interfaccia o qualsiasi altro modo di astrazione). In questo modo, se qualcosa cambia nella classe, le altre classi non ne risentiranno perché dipende da un'astrazione.
+
+
+- Services
+Le classi Servizi sono dove aggiungeremo le regole di business dell'applicazione. Queste classi si trovano tra il controller e il repository. Il livello dell'applicazione non dovrebbe avere accesso al livello dell'infrastruttura, quindi utilizzeremo le classi di servizi nel livello del dominio come intermediario tra i controller nel livello dell'applicazione e i repository nel livello dell'infrastruttura. Inoltre, non dovremmo aggiungere regole di business nel controller, quindi i controller chiameranno i servizi in cui concentreremo le regole di business ei servizi chiameranno il repository.
+
+
+- Interfaces:
+
+Interfaccia generica (IRepository ):
+Questa interfaccia è per la classe Repository generica che creeremo nel livello Infrastructure. Per questa classe abbiamo bisogno della firma per l'operazione CRUD (Create, Read, Update, Delete) e anche di un metodo per salvare le modifiche e per la ricerca
+
+Nella classe Repository che andremo a creare nel progetto Infrastructure, implementeremo questa interfaccia. 
+in questa classe abbiamo tutte le operazioni di base:
+
+Il metodo Add.
+
+Il metodo GetAll 
+
+Il metodo GetById
+
+Il metodo Update 
+
+Il metodo Remove 
+
+NOTA:
+Il metodo Search serve per cercare un'entità che passa un'espressione lambda per cercare qualsiasi entità con qualsiasi parametro. Questo predicato è un'espressione, quindi puoi usare un'espressione lambda per filtrare gli oggetti, è esattamente lo stesso modo in cui usiamo il where con linq.
+
+Il SaveChanges serve per salvare le modifiche dell'entità. Restituirà un int, che sarà il numero di righe interessate dall'azione di salvataggio.
+
+La classe che implementerà questa interfaccia, deve implementare anche l'interfaccia IDissposible per il rilascio della memoria.
+
+
+
+Interfacce specifiche:
+Per la classe BookRepository (che implementeremo nel livello Infrastructure), non utilizzeremo GetById e GetAll della classe generica, perché vogliamo restituire la categoria del libro in quei metodi. Se utilizziamo i metodi della classe Repository generica, non porterà il nome della categoria, quindi avremo un GetAll e GetById specifici per questa classe. Avremo anche un metodo che permetterà di restituire i libri filtrati per categoria. Quindi l'interfaccia IBookRepository erediterà da IRepository<Book> e avremo quei metodi specifici:
+
+- GetAll: questo metodo andremo a sovrascrivere perché dobbiamo aggiungere il nome della categoria nel risultato
+- GetById: anche questo metodo verrà sovrascritto per consentire la restituzione del nome della categoria
+- GetBooksByCategory: questo metodo riceverà l'id di una categoria come parametro e restituirà tutti i libri con questo ID di categoria
+
+new Task<List<Book>> GetAll();
+new Task<Book> GetById(int id);
+
+Abbiamo bisogno del 'new'  perché quei 2 metodi saranno sovrascritti nella classe BookRepository.
+
+
+ICategoryRepository:
+Nell'interfaccia ICategoryRepository non abbiamo bisogno di alcun metodo specifico, quindi creeremo solo l'interfaccia che eredita da IRepository
+
+
+IBookService:
+Nell'IBookService abbiamo la firma dei metodi relativi alle operazioni CRUD e anche il GetBooksByCategory, che riceverà un id di categoria come parametro e restituirà un elenco di libri che hanno quell'id di categoria.
+
+ICategoryService:
+In ICategoryService abbiamo anche la firma dei metodi relativi alle operazioni CRUD.
+
+Per entrambe le classi, il metodo GetAll restituirà un elenco di oggetti. I metodi Add, Update e GetById restituiranno l'oggetto e il metodo remove restituirà il numero di righe interessate.
+Per queste due interfacce è necessario implementare anche Disposable, e il motivo è perché viene utilizzato per il rilascio della memoria.
+
+
+Services:
+Creiamo le classi CategoryService e BookService. 
+Nella classe Services è dove aggiungeremo le regole di business.
+
+Per Categoria è possibile aggiungere una categoria solo se il nome informato non esiste ancora nel database. Ed è possibile rimuovere una categoria solo se non ci sono libri che utilizzano la categoria.
+
+CategoryService, implementa l'interfaccia ICategoryService.
+
+Nota: 
+Utilizziamo Dependency Injection per passare ICategoryRepository nel costruttore della nostra classe. In questo modo la classe non dipende da una classe concreta, ma dipende da un'astrazione (l'interfaccia).
+
+
+BookService, implementa l'interfaccia IBookService.
+Per questa classe vige anche la regola che non permetterà di iscrivere due libri con lo stesso nome. 
+Prima di chiamare il metodo Add o Update, è necessario verificare se il nome è già in uso. Quindi prima cercheremo se esiste già un libro con il nome informato e, se non esiste, possiamo chiamare Aggiungi o Aggiorna.
+
+
+- Strato Infrastructure:
+
+Nella cartella 'Repositories', creiamo le classi Repository, BookRepository e CategoryRepository.
+
+
+Repository generico (BaseRepository):
+E' una classe astratta, il che significa che questa classe non può essere istanziata, può solo essere ereditata. Tutte le classi di repository specifiche che creeremo erediteranno da questa classe principale. In questa classe, dobbiamo implementare i metodi dall'Interface IRepository .
+
+- La proprietà Db è protetta perché tutte le classi che ereditano dal repository possono accedere alla proprietà Db.
+- La proprietà DbSet viene utilizzata come scorciatoia per eseguire le operazioni nel database.
+- Esistono alcuni metodi che sono virtuali e il motivo è perché vogliamo consentire di eseguire un override in un'altra classe di repository specifica, 
+  se necessario. Questo è dalla documentazione ufficiale di Microsoft:
+  (La parola  chiave "virtual" viene utilizzata per modificare un metodo, una proprietà, un indicizzatore o una dichiarazione di evento e consentirne l'override in una classe derivata.)
+
+- Implementiamo il metodo Dispose perché questo viene utilizzato per liberare memoria nella nostra applicazione:
+  => L'implementazione del metodo Dispose serve principalmente per il rilascio delle risorse non gestite utilizzate dal codice.
+
+  - Nel metodo Search, stiamo usando AsNoTracking () perché quando aggiungiamo qualcosa nella memoria, l'oggetto seguirà, quindi in questo caso che stiamo   solo leggendo qualcosa nel database, possiamo usare AsNoTracking per aumentare le prestazioni nel nostro applicazione.
+
+
+
+- Repository specifici (CategoryRepository e BookRepository):
+
+->  Nella classe CategoryRepository erediteremo da Repository<Category>
+-> Nella classe BookRepository erediteremo da Repository<Book> e implementeremo l'interfaccia IBookRepository
+

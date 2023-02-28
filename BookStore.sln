@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.UnitTest", "UnitTest\BookStore.UnitTest.csproj", "{2EA30837-44DC-4D4E-BE94-522870A2FE93}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi", "Analisi", "{E1FC3262-C45D-41C5-8934-12415B9E166A}"
+	ProjectSection(SolutionItems) = preProject
+		AnalisiStrutturaleCodice.txt = AnalisiStrutturaleCodice.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

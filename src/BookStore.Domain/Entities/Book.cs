@@ -6,6 +6,7 @@ namespace BookStore.Domain.Models;
 
 public partial class Book: BaseEntity
 {
+    //public long Id { get; set; }
     public string Title { get; set; } = null!;
 
     public string Author { get; set; } = null!;
