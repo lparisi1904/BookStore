@@ -69,7 +69,8 @@ namespace BookStore.Domain.Tests
             Assert.NotNull(result);
             Assert.IsType<List<Category>>(result);
         }
-
+        
+    
         [Fact]
         public async void GetAll_ShouldCallGetAllFromRepository_OnlyOnce()
         {
@@ -80,8 +81,46 @@ namespace BookStore.Domain.Tests
             await _categoryService.GetAll();
 
             _categoryRepositoryMock.Verify(mock => mock.GetAll(), Times.Once);
-
         }
 
+        [Fact]
+        public async void GetById_ShouldReturnCategory_WhenCategoryExist()
+        {
+            var category = CreateCategory();
+
+            _categoryRepositoryMock.Setup(c =>
+                c.GetById(category.Id)).ReturnsAsync(category);
+
+            var result = await _categoryService.GetById(category.Id);
+
+            Assert.NotNull(result);
+            Assert.IsType<Category>(result);
+        }
+
+
+
+
+        [Fact]
+        public async void GetById_ShouldReturnNull_WhenCategoryDoesNotExist()
+        {
+            _categoryRepositoryMock
+                .Setup(x => x.GetById(1))
+                .ReturnsAsync((Category)null);
+
+            var resul = await _categoryService.GetById(1);
+
+            Assert.Null(resul);
+        }
+
+        [Fact]
+        public async void GetById_ShouldCallGetByIdFromRepository_OnlyOnce()
+        {
+            _categoryRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync((Category)null);
+
+            await _categoryService.GetById(1);
+
+            _categoryRepositoryMock.Verify(x => x.GetById(1), Times.Once);
+
+        }
     }
 }
