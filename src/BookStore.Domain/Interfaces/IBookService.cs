@@ -14,7 +14,19 @@ namespace BookStore.Domain.Interfaces
         Task<Book> Add(Book book);
         Task<Book> Update(Book book);
         Task<Book> Remove(Book book);
+        
+        /// <summary>
+        /// Ricerca un libro per codice categoria
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
         Task<IEnumerable<Book>> GetBooksByCategory(long categoryId);
+
+        /// <summary>
+        /// Effettua una ricerca per titolo libro
+        /// </summary>
+        /// <param name="bookTitle"></param>
+        /// <returns></returns>
         Task<IEnumerable<Book>> Search(string bookTitle);
         Task<IEnumerable<Book>> SearchBookWithCategory(string searchValue);
     }

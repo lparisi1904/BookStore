@@ -14,5 +14,6 @@ namespace BookStore.Domain.Interfaces
         new Task<Book> GetById(long id);
         Task<IEnumerable<Book>> GetBooksByCategory(long categoryId);
         Task<IEnumerable<Book>> SearchBookWithCategory(string searchValue);
+
     }
 }

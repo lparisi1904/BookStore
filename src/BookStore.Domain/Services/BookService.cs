@@ -19,7 +19,6 @@ namespace BookStore.Domain.Services
             _bookRepository = bookRepository;
         }
 
-
         public async Task<IEnumerable<Book>> GetAll()
         {
             return await _bookRepository.GetAll();

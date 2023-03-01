@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BookStore.Domain.Entities;
+﻿using BookStore.Domain.Entities;
 using BookStore.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Book = BookStore.Domain.Entities.Book;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BookStore.Infrastructure.Repositories
 {
@@ -17,16 +14,17 @@ namespace BookStore.Infrastructure.Repositories
         public override async Task<List<Book>> GetAll() 
             => await Db.Books
                 .AsNoTracking()
-                .Include(c => c.Category)
-                .OrderBy(c => c.Title)
+                .Include(cate => cate.Category)
+                .OrderBy(cate => cate.Title)
                 .ToListAsync();
 
         public override async Task<Book> GetById(long id) 
             => await Db.Books
                 .AsNoTracking()
-                .Include(b => b.Category)
-                .Where(c => c.Id == id)
+                .Include(cate => cate.Category)
+                .Where(cate => cate.Id == id)
                 .FirstOrDefaultAsync();
+
 
         public async Task<IEnumerable<Book>> GetBooksByCategory(long categoryId)
         {

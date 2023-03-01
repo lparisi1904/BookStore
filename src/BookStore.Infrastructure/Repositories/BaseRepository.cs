@@ -20,6 +20,7 @@ namespace BookStore.Infrastructure.Repositories
             Db = db;
             DbSet = db.Set<TEntity>();
         }
+
         public virtual async Task Add(TEntity entity)
         {
             DbSet.Add(entity);
