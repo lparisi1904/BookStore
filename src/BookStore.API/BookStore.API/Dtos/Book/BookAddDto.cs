@@ -1,4 +1,5 @@
 ﻿using BookStore.Domain.Entities;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookStore.API.Dtos.Book
@@ -9,6 +10,7 @@ namespace BookStore.API.Dtos.Book
         public long CategoryId { get; init; }
 
         [Required(ErrorMessage ="Il campo {0} è richiesto")]
+        [DisplayName("Id Categoria")]
         public int PublisherId { get; init; }
 
         [Required(ErrorMessage ="Il campo {0} è richiesto")]

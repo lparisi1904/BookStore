@@ -91,9 +91,10 @@ namespace BookStore.API.Controllers
            if (!isDeleted) 
                 return base.BadRequest(Enums.StatusCode.CategoryDeletedKO.GetDescription());
 
-           var CategoryDto = category.Adapt<CategoryResultDto>();
+            return base.BadRequest(Enums.StatusCode.CategorySuccessDeleted.GetDescription());
 
-           return Ok(CategoryDto);
+           //var CategoryDto = category.Adapt<CategoryResultDto>();
+           //return Ok(CategoryDto);
         }
 
         [HttpGet("Search")]

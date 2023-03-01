@@ -43,22 +43,22 @@ namespace BookStore.API.Utils
 
             // Categories codes...
             [Description("Categoria non trovata.")]
-            CategoryNotFound = 100,
+            CategoryNotFound = 700,
 
             [Description("Categoria aggiornato correttamente.")]
-            CategorySuccessUpdate = 200,
+            CategorySuccessUpdate = 800,
 
             [Description("Categoria cancellata correttamente.")]
-            CategorySuccessDeleted = 300,
+            CategorySuccessDeleted = 900,
 
             [Description("Codice (id) non corrispondente ad id in archivio.")]
-            CategoryNotMatch = 400,
+            CategoryNotMatch = 1000,
 
             [Description("Stato operazione OK.")]
-            CategorySuccessOK = 500,
+            CategorySuccessOK = 1100,
 
             [Description("Cancellazione Categoria non riuscita.")]
-            CategoryDeletedKO = 600
+            CategoryDeletedKO = 1200
         }
 
         public enum Genre
