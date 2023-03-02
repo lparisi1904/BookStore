@@ -25,6 +25,7 @@ namespace BookStore.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> GetAllBooks()
         {
             var books = await _bookService.GetAll();
@@ -40,6 +41,7 @@ namespace BookStore.API.Controllers
         [HttpGet("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> GetBookById(long id)
         {
             var book = await _bookService.GetById(id);
@@ -58,6 +60,7 @@ namespace BookStore.API.Controllers
         [Route("get-books-by-category/{categoryId:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> GetBooksByCategory(long categoryId)
         {
             var books = await _bookService.GetBooksByCategory(categoryId);
@@ -74,6 +77,7 @@ namespace BookStore.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> AddBook(BookAddDto bookDto)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -93,6 +97,7 @@ namespace BookStore.API.Controllers
         [HttpPut("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> UpdateBook(long id, BookEditDto bookDto)
         {
             if (id != bookDto.Id) 
@@ -110,6 +115,7 @@ namespace BookStore.API.Controllers
         [HttpDelete("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> RemoveBook(long id)
         {
             var book = await _bookService.GetById(id);
@@ -125,6 +131,7 @@ namespace BookStore.API.Controllers
         [Route("search/{bookTitle}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<List<Book>>> SearchBook(string bookTitle)
         {
             var book = await _bookService.Search(bookTitle);
@@ -140,6 +147,7 @@ namespace BookStore.API.Controllers
         [Route("search-book-with-category/{searchedValue}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<List<Book>>> SearchBookWithCategory(string searchValue)
         {
             var searchBook  = await _bookService.SearchBookWithCategory(searchValue);
