@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Domain", "src\Boo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Infrastructure", "src\BookStore.Infrastructure\BookStore.Infrastructure.csproj", "{79AF99B9-FE43-4148-A118-8B7A47B728EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.UnitTest", "UnitTest\BookStore.UnitTest.csproj", "{2EA30837-44DC-4D4E-BE94-522870A2FE93}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi", "Analisi", "{E1FC3262-C45D-41C5-8934-12415B9E166A}"
 	ProjectSection(SolutionItems) = preProject
 		AnalisiStrutturale.txt = AnalisiStrutturale.txt
@@ -18,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi", "Analisi", "{E1FC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5D31EDB0-81F8-416D-8016-F1CF2C7DF303}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Domain.Tests", "tests\BookStore.Domain.Tests\BookStore.Domain.Tests.csproj", "{FF91FD5C-117F-47E7-8D5A-72D2EB006175}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Domain.Tests", "tests\BookStore.Domain.Tests\BookStore.Domain.Tests.csproj", "{FF91FD5C-117F-47E7-8D5A-72D2EB006175}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +36,6 @@ Global
 		{79AF99B9-FE43-4148-A118-8B7A47B728EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79AF99B9-FE43-4148-A118-8B7A47B728EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79AF99B9-FE43-4148-A118-8B7A47B728EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EA30837-44DC-4D4E-BE94-522870A2FE93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EA30837-44DC-4D4E-BE94-522870A2FE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EA30837-44DC-4D4E-BE94-522870A2FE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EA30837-44DC-4D4E-BE94-522870A2FE93}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FF91FD5C-117F-47E7-8D5A-72D2EB006175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FF91FD5C-117F-47E7-8D5A-72D2EB006175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF91FD5C-117F-47E7-8D5A-72D2EB006175}.Release|Any CPU.ActiveCfg = Release|Any CPU
