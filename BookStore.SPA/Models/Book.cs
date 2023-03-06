@@ -4,25 +4,6 @@ namespace BookStore.SPA.Models
 {
     public class Book
     {
-
-
-        //public string Title { get; set; } = null!;
-        //public string Author { get; set; } = null!;
-
-        //public string Description { get; set; } = null!;
-
-        //public int? YearBook { get; set; }
-
-        //public long CategoryId { get; set; }
-
-        //public long PublisherId { get; set; }
-
-        //public virtual Category Category { get; set; } = null!;
-
-        //public virtual Publisher Publisher { get; set; } = null!;
-
-
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
