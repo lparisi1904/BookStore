@@ -1,0 +1,39 @@
+﻿@* Nome della pagina che vogliamo che questo componente abbia *@
+@page "/books"
+@using Blazored.Toast.Services;
+@using BookStore.SPA.Interfaces
+@using BookStore.SPA.Models
+
+@*utilizzato per la finestra di dialogo di conferma 
+(che rappresenta un'istanza di un runtime JavaScript a cui possono essere inviate le chiamate)*@
+@inject IJSRuntime JsRuntime  
+@*Per le notifiche*@
+@inject IToastService ToastService
+
+
+<section class="book-edit text-center"></section>
+
+<h1 class="page-title">@Title</h1>
+
+
+@*    <EditForm Model="@Book" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+
+        <div class="form-group row justify-content-center">
+            <label for="title" class="col-form-label col-sm-2">Title: </label>
+            <div class="col-sm-8 col-md-5">
+                <InputText id="title" class="form-control" @bind-Value="@Book.Name" placeholder="Title"></InputText>
+                <ValidationMessage For="@(() => Book.Name)" />
+            </div>
+        </div>
+*@
+
+
+<EditForm Model="@Book" OnInvalidSubmit="@HandleValidSubmit">
+
+
+</EditForm>
+
+@code {
+
+}
