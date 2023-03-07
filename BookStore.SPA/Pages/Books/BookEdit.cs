@@ -1,6 +1,7 @@
 ﻿namespace BookStore.SPA.Pages.Books
 {
-    public class BookEdit
+    public partial class BookEdit
     {
+
     }
 }
