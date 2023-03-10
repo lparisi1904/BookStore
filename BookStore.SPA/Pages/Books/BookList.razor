@@ -1,1 +1,159 @@
-﻿
+﻿@page "/books"
+@using Blazored.Toast.Services;
+@using BookStore.SPA.Interfaces
+@using BookStore.SPA.Models
+@inject IJSRuntime JsRuntime
+@inject IToastService ToastService
+
+
+<div class="jumbtron">
+    <h1 class="display-4 text-center">Elenco libri</h1>
+</div>
+
+
+<div class="col-md-12">
+    <button type="button" class="btn btn-primary" @onclick="@AddBookPage">Nuovo libro</button>
+    <hr />
+</div>
+
+<div class="form-group">
+    <label for="Search">Ricerca...</label>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text bg-white">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+        <input type="text" class="form-control" placeholder="Search by title, author or category"
+               @bind-value="@SearchedValue" @bind-value:event="oninput" @onkeyup="async () => SearchBook()">
+        </input>
+        <button type="button" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+
+        <button type="button" class="btn btn-primary">
+    <i class="fas fa-search"></i>
+  </button>
+
+    </div>
+</div>
+
+
+@if (Books == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-condensed table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="col-lg-2">Libro</th>
+                <th class="col-lg-1">Autore</th>
+                <th class="col-lg-1">Categoria</th>
+                <th class="col-lg-3">Descrizione</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Books)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.CategoryName</td>
+                    <td>@book.Description</td>
+@*                    <td>
+                        <a href="@($"bookedit/{book.Id}")" class="btn btn-default">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger" @onclick="() => DeleteBook(book)">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>*@
+
+                    <td>
+                        <button class="btn btn-warning" onclick="@(async () => AddBookPage())">Modifica</button>
+                        <button class="btn btn-danger" onclick="@(async () =>  DeleteBook(book))">Cancella</button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    [Inject]
+    public IBookService BookService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public IEnumerable<Book> Books { get; set; }
+    public IEnumerable<Book> CompleteListBooks { get; set; }
+
+    protected string SearchedValue { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Books = (await BookService.GetAll()).ToList();
+        CompleteListBooks = Books;
+        StateHasChanged();
+    }
+
+
+    protected async void AddBookPage()
+    {
+        NavigationManager.NavigateTo("/bookedit");
+    }
+
+
+    protected async void DeleteBook(Book book)
+    {
+        bool confirm = await JsRuntime.InvokeAsync<bool>("Cancellazione", $"Sei sicuro di voler cancellare il libro  {book.Title}?");
+        if (confirm)
+        {
+            if (await BookService.Delete(book.Id))
+            {
+                Books = (await BookService.GetAll()).ToList();
+                CompleteListBooks = Books;
+
+                ToastService.ShowSuccess("Cancellato con successo!");
+                StateHasChanged();
+            }
+            else
+            {
+                ToastService.ShowError("Qualcosa non ha funzionato. Riprova.");
+            }
+        }
+    }
+
+    protected void SearchBook()
+   {
+        if (!string.IsNullOrEmpty(SearchedValue))
+        {
+            var search = SearchedValue.ToLower();
+
+            Books = CompleteListBooks.Where(b => b.Title.ToLower().Contains(search) ||
+                                    b.Author.ToLower().Contains(search) ||
+                                    b.CategoryName.ToLower().Contains(search)
+                                ).ToList();
+        }
+        else
+        {
+            Books = CompleteListBooks;
+        }
+    }
+}
+
+
+
+
+
+
+
+

@@ -11,21 +11,24 @@ namespace BookStore.SPA.Services
         private readonly IConfiguration _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly string _baseUri;
+        private readonly HttpClient _httpClient;
 
-        public CategoryService(IConfiguration configuration, IHttpClientFactory httpClientFactory)
+
+        public CategoryService(IConfiguration configuration, IHttpClientFactory httpClientFactory, HttpClient httpClient)
         {
             _configuration = configuration;
             _baseUri = _configuration.GetSection("BookStoreApi:Url").Value;
             _httpClientFactory = httpClientFactory;
+            _httpClient = httpClient;
         }
+
 
         public async Task<IEnumerable<Category>> GetAll()
         {
-            var httpClient = _httpClientFactory.CreateClient();
-
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<Category>>($"{_baseUri}api/categories");
+            var response = await _httpClient.GetFromJsonAsync<IEnumerable<Category>>($"/api/categories");
 
             return response;
+
         }
 
         public async Task<Category> GetById(int categoryId)

@@ -14,14 +14,14 @@ namespace BookStore.Infrastructure.Repositories
         public override async Task<List<Book>> GetAll() 
             => await Db.Books
                 .AsNoTracking()
-                .Include(cate => cate.Category)
+                .Include(cat => cat.Category)
                 .OrderBy(cate => cate.Title)
                 .ToListAsync();
 
         public override async Task<Book> GetById(long id) 
             => await Db.Books
                 .AsNoTracking()
-                .Include(cate => cate.Category)
+                .Include(cat => cat.Category)
                 .Where(cate => cate.Id == id)
                 .FirstOrDefaultAsync();
 

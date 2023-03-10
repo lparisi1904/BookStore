@@ -26,9 +26,17 @@ namespace BookStore.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> GetAllBooks()
+        public async Task<IActionResult> GetBooks()
         {
-            var books = await _bookService.GetAll();
+            var books = await _bookService.GetAll(); //.Select(x=> new BookResult()
+            //{
+            //    Author= x.Author,
+            //    CategoryId  = x.CategoryId,
+            //    Description = x.Description,
+            //    PublisherId = x.PublisherId,
+            //    Title = x.Title,
+            //    YearBook = x.YearBook
+            //});
 
             if (!books.Any() || books == null)
                 return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
@@ -36,7 +44,29 @@ namespace BookStore.API.Controllers
             var result = books.Adapt<IEnumerable<BookResultDto>>();
 
             return Ok(result);
+
+            //return Ok(books);
         }
+
+        //public class BookResult 
+        //{
+        //    public string Title { get; set; } = null!;
+
+        //    public string Author { get; set; } = null!;
+
+        //    public string Description { get; set; } = null!;
+
+        //    public int? YearBook { get; set; }
+
+        //    public long CategoryId { get; set; }
+
+        //    public long PublisherId { get; set; }
+
+        //    public virtual Category Category { get; set; } = null!;
+
+        //    public virtual Publisher Publisher { get; set; } = null!;
+        //}
+
 
         [HttpGet("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

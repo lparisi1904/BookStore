@@ -38,7 +38,26 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var booksclient = "bookclient";
+
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy(name: booksclient,
+    policy =>
+    {
+        policy
+     .AllowAnyHeader()
+     .AllowAnyMethod()
+     .AllowAnyOrigin();
+    });
+});
+
+
+
 var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -46,6 +65,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//builder.Services.AddCors(x => x.AddPolicy("customPolicy", builder => builder
+//                            .AllowAnyOrigin()
+//                            .AllowAnyMethod()
+//                            .AllowAnyHeader()));
+
+
+
 
 //builder.Services.AddSwaggerGen(c =>
 //{
@@ -61,6 +88,8 @@ builder.Services.AddCors();
 
 
 app.UseHttpsRedirection();
+
+app.UseCors(booksclient);
 
 app.UseAuthorization();
 
