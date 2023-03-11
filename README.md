@@ -11,6 +11,7 @@ Progetto Web API con UI Bazor usando .NET 7.0
 ## Architettura
 - 4 Layers:
   - Web-UI layer (SPA)
+     - Blazor WebAssembly
   
   - Application layer (API)
     - Controllers
