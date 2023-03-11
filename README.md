@@ -1,14 +1,14 @@
 # BookStore
 Progetto Web API con UI Bazor usando .NET 7.0
 
-## Technologies
+## Technologie
 - .NET 7
 - Entity Framework 7
 - Mapster Mapping
 - Swagger
 - SQL Server
 
-## Architecture
+## Architettura
 - 4 Layers:
   - Web-UI layer (SPA)
   
@@ -24,7 +24,7 @@ Progetto Web API con UI Bazor usando .NET 7.0
   - Infrastructure layer
     - Repository Pattern
 
-  ### Unit tests
+  ## Unit tests
 - xUnit
 - Moq
 - Fluent Assertions
