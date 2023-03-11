@@ -17,8 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
 
-// Register Library Service to use it with Dependency Injection in Controllers
-//builder.Services.AddScoped<BookStoreDbContext>();
+// Registro i servizii per utilizzarli con Dependency Injection nei Controllori
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 

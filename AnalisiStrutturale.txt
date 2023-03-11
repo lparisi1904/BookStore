@@ -1,14 +1,79 @@
 
-ANALISI STRUTTURALE DEL CODICE
+ARCHITETTURA E ANALISI STRUTTURALE DEL CODICE
 ------------------------------
 
-- Il modello Repository:
+SCOPO: 
+ Eseguire operazioni CRUD per libri e categorie di libri. 
 
-Alcuni vantaggi di questo modello sono:
+=> UtilizzO Swagger per documentare la nostra API (endpoint) e inserisco anche il codice in GitHub.
+
+
+Avremo quattro livelli per questa applicazione. 
+
+- Livello APPLICATION che comprende:
+
+=> CONTROLLER
+=> DTOs (per trasferire dati tra i livelli) => 2 Vantaggi con Dtos: 
+    1- non si è costretti a passare TUTTI i dati (riduce la quantità di dati da trasferire tra i Livelli) 
+    2- possibilità di 'nascondare' dati sensibili
+
+
+
+LIVELLO DOMAIN che comprende:
+
+=> ENTITIES
+=> INTERFACES (per lavorare con Dependency Injection (DI)
+=> SERVICES (REGOLE DI BUSINESS)
+
+(Nota:)
+I moduli di alto livello 'NON DEVONO' dipendere da moduli di basso livello. Entrambi dovrebbero dipendere da astrazioni.
+IMPORTANTE:
+Significa che non dovremmo dipendere da un'implementazione (una CLASSE CONCRETA) ma dobbiamo dipendere da un'ASTRAZIONE.
+(questa può essere un'interfaccia o qualsiasi altro modo di astrazione). 
+
+VANTAGGIO: 
+se qualcosa cambia nella classe, le altre classi non ne risentiranno perché dipende da un'astrazione.
+
+-----------------------------------
+SCOPO della  Dependency Injection
+-----------------------------------
+fare in modo che i componenti siano facilmente sostituibili. 
+E lo facciamo con l'uso di Interfacce..
+l'interfaccia descrive semplicemente quali sono i membri pubblici che una classe dovrà implementare e non il modo in cui deve implementarli. 
+Il modo, invece, lo definisco nella classe 'Service' che è un'implementazione CONCRETA dell'interfaccia.
+
+Poi mi sposto nel Controller e faccio in modo che abbia una dipendenza da tale interfaccia. 
+Un'istanza dell'interfaccia dovrà essere fornita dall'esterno.
+Le dipendenze le possiamo esprimere come parametri del costruttore. 
+
+Esempio pratico:
+private readonly IBookService _bookService;
+
+// Ecco il costruttore. 
+// copiamo su un campo privato (_bookService) in modo che sia accessibile dalle Action...
+public NomeController(ICourseService bookService)
+{
+    this._bookService = bookService;
+}
+
+// nella classe nel Programs 'inietto' i Servizi (Interfacce + Classi concrete):
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+
+
+
+LIVELLO INFRASTRUCTURE che comprende:
+
+=> Modelli di REPOSITORIES (Repository Pattern)
+
+
+Alcuni vantaggi del modello REPOSITORY sono:
 
 Consente l'isolamento del livello aziendale (il livello del dominio) del livello del database (il livello dell'infrastruttura).
+Vantaggio: 
 Consente la modifica di un database in futuro (se necessario) senza avere molto impatto sul sistema
-Consenti accoppiamento libero tra le classi
 Hai tutto il codice per accedere al database in un unico posto
 Semplifica l'implementazione del test unitario
 Fornire un'architettura flessibile
@@ -16,20 +81,21 @@ Facile da mantenere
 
 dalla documentazione Microsoft :
 
-I repository sono classi o componenti che incapsulano la logica richiesta per accedere alle origini dati. Centralizzano le funzionalità di accesso ai dati comuni, fornendo una migliore manutenibilità e disaccoppiando l'infrastruttura o la tecnologia utilizzata per accedere ai database dal livello del modello di dominio.
+I repository sono classi che incapsulano la logica richiesta per accedere alle origini dati (Db). 
+Centralizzano le funzionalità di accesso ai dati comuni, fornendo una migliore manutenibilità e disaccoppiando l'infrastruttura 
+o la tecnologia utilizzata per accedere ai database dal livello del modello di dominio.
 
-Utilizzando questo modello, avremo una classe generica per il repository con le operazioni di base (Aggiungi, Ottieni, GetById, Rimuovi, Aggiorna, Cerca, Salva) e avremo classi specifiche per azioni specifiche di cui abbiamo bisogno, che va oltre le operazioni di base. 
+Utilizzando questo modello, avremo una classe generica per il repository con le operazioni di base CRUD (Add, GetAll, GetById, Delete, Update, Find, Save) e avremo classi specifiche per azioni specifiche di cui abbiamo bisogno, che va oltre le operazioni di base. 
 
 
 
-- Livello di Domain:
-In questo livello avremo le interfacce e i servizi. Utilizzeremo le Interfacce per lavorare con Dependency injection, ovvero la lettera D dei principi SOLID, ovvero Dependency Inversion Principle (noto anche come IoC — Inversion of Control). 
 
-I moduli di alto livello non dovrebbero dipendere da moduli di basso livello. Entrambi dovrebbero dipendere da astrazioni. 
-Le astrazioni non dovrebbero dipendere dai dettagli. 
-I dettagli dovrebbero dipendere dalle astrazioni.
-IMPORTANTE:
-Significa che non dovremmo dipendere da un'implementazione (una classe concreta) ma dobbiamo dipendere da un'astrazione (questa può essere un'interfaccia o qualsiasi altro modo di astrazione). In questo modo, se qualcosa cambia nella classe, le altre classi non ne risentiranno perché dipende da un'astrazione.
+
+
+
+
+
+
 
 
 - Services
@@ -45,26 +111,25 @@ Inoltre, non dovremmo aggiungere regole di "business" nel Controller, ma saranno
 Interfaccia generica (IRepository):
 Questa interfaccia è per la classe Repository generica che creeremo nel livello Infrastructure. Per questa classe abbiamo bisogno della firma per l'operazione CRUD (Create, Read, Update, Delete) e anche di un metodo per salvare le modifiche e per la ricerca
 
-Nella classe Repository che andremo a creare nel progetto Infrastructure, implementeremo questa interfaccia. 
-in questa classe abbiamo tutte le operazioni di base:
+Nella classe Repository che vado a creare nel progetto 'Infrastructure', implemento questa interfaccia. 
 
-Il metodo Add.
+In questa classe abbiamo tutte le operazioni di base:
 
-Il metodo GetAll 
-
-Il metodo GetById
-
-Il metodo Update 
-
-Il metodo Remove 
+=> Il metodo Add.
+=> Il metodo GetAll 
+=> Il metodo GetById
+=> Il metodo Update 
+=> Il metodo Remove 
 
 NOTA:
-Il metodo Search serve per cercare un'entità che passa un'espressione lambda per cercare qualsiasi entità con qualsiasi parametro. Questo predicato è un'espressione, quindi puoi usare un'espressione lambda per filtrare gli oggetti, è esattamente lo stesso modo in cui usiamo il where con linq.
+Il metodo Search serve per cercare un'entità che passa un'espressione lambda per cercare 'qualsiasi' entità con qualsiasi parametro. 
+Questo predicato è un'espressione, quindi puoi usare un'espressione lambda per filtrare gli oggetti, è esattamente lo stesso modo 
+in cui usiamo il where con linq.
 
-Il SaveChanges serve per salvare le modifiche dell'entità. Restituirà un int, che sarà il numero di righe interessate dall'azione di salvataggio.
+Il SaveChanges serve per salvare le modifiche dell'entità. 
+Restituirà un int, che sarà il numero di righe interessate dall'azione di salvataggio.
 
 La classe che implementerà questa interfaccia, deve implementare anche l'interfaccia IDissposible per il rilascio della memoria.
-
 
 
 Interfacce specifiche:

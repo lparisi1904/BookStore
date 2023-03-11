@@ -9,10 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Domain", "src\Boo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Infrastructure", "src\BookStore.Infrastructure\BookStore.Infrastructure.csproj", "{79AF99B9-FE43-4148-A118-8B7A47B728EE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi", "Analisi", "{E1FC3262-C45D-41C5-8934-12415B9E166A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi Progetto", "Analisi Progetto", "{E1FC3262-C45D-41C5-8934-12415B9E166A}"
 	ProjectSection(SolutionItems) = preProject
 		AnalisiStrutturale.txt = AnalisiStrutturale.txt
 		src\BookStore.API\BookStore.API\Architecture.txt = src\BookStore.API\BookStore.API\Architecture.txt
+		src\BookStore.Domain\ScriptsCreateDb.txt = src\BookStore.Domain\ScriptsCreateDb.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5D31EDB0-81F8-416D-8016-F1CF2C7DF303}"

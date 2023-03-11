@@ -61,12 +61,12 @@ namespace BookStore.SPA.Pages.Books
             var result = await BookService.Add(Book);
             if (result != null)
             {
-                ToastService.ShowSuccess("The book was successfully added.");
+                ToastService.ShowSuccess($"Il libro {Book.Title} è stato aggiunto.");
                 NavigateToBooksPage();
             }
             else
             {
-                ToastService.ShowError("Something went wrong while adding the book. Please try again.");
+                ToastService.ShowError("Qualcosa è andato storto durante l'aggiunta del libro. Si prega di riprovare.");
             }
         }
 
@@ -75,12 +75,12 @@ namespace BookStore.SPA.Pages.Books
             var result = await BookService.Update(Book);
             if (result)
             {
-                ToastService.ShowSuccess("The book was successfully updated.");
+                ToastService.ShowSuccess($"Il libro {Book.Title} è stato aggiornato.");
                 NavigateToBooksPage();
             }
             else
             {
-                ToastService.ShowError("Something went wrong while updating the book. Please try again.");
+                ToastService.ShowError("Qualcosa è andato storto durante l'aggiunta del libro. Si prega di riprovare.");
             }
         }
 

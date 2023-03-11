@@ -1,18 +1,20 @@
 ﻿Clean Architecture in ASP .NET Core Web API
 
-Per applicare Clean Architecture, possiamo suddividere l'applicazione in quattro livelli principali:
+Per applicare Clean Architecture, suddivido l'applicazione in quattro livelli principali:
 
-Livello di dominio → il progetto che contiene il livello di dominio, comprese le entità, gli oggetti valore e i servizi di dominio
-Livello applicazione → il progetto che contiene il livello applicazione e implementa i servizi applicativi, DTO (oggetti di trasferimento dati) e mappatori. Dovrebbe fare riferimento al progetto Domain .
-Livello dell'infrastruttura → Il progetto contiene il livello dell'infrastruttura, inclusa l'implementazione dell'accesso ai dati, registrazione, e-mail e altri meccanismi di comunicazione. Dovrebbe fare riferimento al progetto dell'applicazione .
-Livello di presentazione → Il progetto principale contiene il livello di presentazione e implementa l'API Web ASP.NET Core. Dovrebbe fare riferimento ai progetti Applicazione e Infrastruttura .
+-> Livello di Dominio → il progetto che contiene il livello di dominio, comprese le entità, gli oggetti valore e i servizi di dominio
+-> Livello Applicazione → il progetto che contiene il livello applicazione e implementa i servizi applicativi, DTO (oggetti di trasferimento dati) e mappatori. Dovrebbe fare riferimento al progetto Domain .
+-> Livello dell'Infrastruttura → Il progetto contiene il livello dell'infrastruttura, inclusa l'implementazione dell'accesso ai dati, registrazione, e-mail e altri meccanismi di comunicazione. Dovrebbe fare riferimento al progetto dell'applicazione .
+-> Livello di Presentazione → Il progetto principale contiene il livello di presentazione e implementa l'API Web ASP.NET Core. 
+   Dovrebbe fare riferimento ai progetti Applicazione e Infrastruttura .
 
 Schema di architettura pulito
 Struttura del progetto
 La struttura del progetto per un'architettura pulita nell'API Web ASP.NET Core potrebbe essere simile alla seguente:
 
 
-Struttura del progetto
+Struttura del progetto:
+-----------------------
 È possibile iniziare creando una soluzione vuota e aggiungendo quattro cartelle di soluzione : Core , Infrastructure , Presentation e Test .
 
 Livello di dominio
@@ -20,7 +22,8 @@ Il livello di dominio è un componente fondamentale di Clean Architecture, che r
 
 L'obiettivo del livello di dominio è incapsulare la conoscenza dell'applicazione in modo che sia facilmente testabile, riutilizzabile e indipendente da qualsiasi infrastruttura o tecnologia specifica. Questo livello non dovrebbe dipendere da componenti esterni, come database o API, e dovrebbe interagire con essi solo tramite astrazioni. Mantenere il livello di dominio libero da problemi di infrastruttura semplifica la modifica o la sostituzione dei componenti dell'infrastruttura senza influire sulla logica di business dell'applicazione.
 
-Il livello di dominio è un progetto di libreria di classi che si trova all'interno della cartella Core . Il livello di dominio non ha alcun riferimento all'altro livello.
+Il livello di dominio è un progetto di libreria di classi che si trova all'interno della cartella Core . 
+Il livello di dominio non ha alcun riferimento all'altro livello.
 
 
 Struttura del livello di dominio
