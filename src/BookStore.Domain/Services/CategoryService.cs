@@ -31,7 +31,9 @@ namespace BookStore.Domain.Services
 
         public async Task<Category> Add(Category category)
         {
-            if (_categoryRepository.Search(c => c.Name == category.Name).Result.Any())
+            if (_categoryRepository
+                .Search(c => c.Name == category.Name).Result.Any())
+                
                 return null;
 
             await _categoryRepository.Add(category);
@@ -42,6 +44,7 @@ namespace BookStore.Domain.Services
         {
             if (_categoryRepository
                 .Search(cat => cat.Name == category.Name && cat.Id != category.Id).Result.Any())
+
                 return null;
 
             await _categoryRepository.Update(category);

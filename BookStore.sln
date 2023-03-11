@@ -13,12 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi Progetto", "Analisi
 	ProjectSection(SolutionItems) = preProject
 		AnalisiStrutturale.txt = AnalisiStrutturale.txt
 		src\BookStore.API\BookStore.API\Architecture.txt = src\BookStore.API\BookStore.API\Architecture.txt
-		src\BookStore.Domain\ScriptsCreateDb.txt = src\BookStore.Domain\ScriptsCreateDb.txt
+		SqlCreateDb.sql = SqlCreateDb.sql
+		Verbi HTTP.txt = Verbi HTTP.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5D31EDB0-81F8-416D-8016-F1CF2C7DF303}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Domain.Tests", "tests\BookStore.Domain.Tests\BookStore.Domain.Tests.csproj", "{FF91FD5C-117F-47E7-8D5A-72D2EB006175}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Tests", "tests\BookStore.Domain.Tests\BookStore.Tests.csproj", "{FF91FD5C-117F-47E7-8D5A-72D2EB006175}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.SPA", "BookStore.SPA\BookStore.SPA.csproj", "{3976D999-119B-4BD3-84A6-A8C5C51D706E}"
 EndProject

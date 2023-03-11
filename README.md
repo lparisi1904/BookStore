@@ -1,5 +1,5 @@
 # BookStore
-Web API Project using .NET 7.0
+Progetto Web API con UI Bazor usando .NET 7.0
 
 ## Technologies
 - .NET 7
@@ -8,13 +8,10 @@ Web API Project using .NET 7.0
 - Swagger
 - SQL Server
 
-### Unit tests
-- xUnit
-- Moq
-- Fluent Assertions
-
 ## Architecture
-- 3 Layers:
+- 4 Layers:
+  - Web-UI layer (SPA)
+  
   - Application layer (API)
     - Controllers
     - Dtos
@@ -26,3 +23,8 @@ Web API Project using .NET 7.0
     
   - Infrastructure layer
     - Repository Pattern
+
+  ### Unit tests
+- xUnit
+- Moq
+- Fluent Assertions

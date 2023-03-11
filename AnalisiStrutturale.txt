@@ -10,12 +10,58 @@ SCOPO:
 
 Avremo quattro livelli per questa applicazione. 
 
-- Livello APPLICATION che comprende:
+
+
+- Livello APPLICATION (API) che comprende:
 
 => CONTROLLER
 => DTOs (per trasferire dati tra i livelli) => 2 Vantaggi con Dtos: 
     1- non si è costretti a passare TUTTI i dati (riduce la quantità di dati da trasferire tra i Livelli) 
     2- possibilità di 'nascondare' dati sensibili
+
+Intallare:
+Install-Package Microsoft.EntityFrameworkCore.Design
+
+=> Swagger:
+Install-Package Swashbuckle.AspNetCore
+
+In Programs:
+services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        Title = "BookStore API",
+        Version = "v1"
+    });
+});
+
+
+[ProducesResponseType(StatusCodes.xxx)]
+sopra ogni metodo è stato aggiunto l'attributo. 
+Questo perché un metodo può avere più di un tipo di restituzione, ad esempio può restituire un NotFound nel caso in cui 
+il record non esista o può restituire un Ok se il valore viene restituito. 
+L'aggiunta di questo attributo produrrà dettagli di risposta più descrittivi per l'API Web, 
+quindi quando controlliamo l'API in Swagger, vedremo dettagli più descrittivi su quali codici di stato possono essere restituiti dall'API.
+
+es.
+[HttpGet]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status404NotFound)]
+[ProducesDefaultResponseType]
+
+
+
+appsettings.json (=> connection string database)
+
+es.
+"ConnectionStrings": {
+    "DefaultConnection": "Server=.\\SQLExpress;Database=BookStore;Trusted_Connection=true;Encrypt=false;"
+  }
+
+Programs (API)
+// Register database
+builder.Services.AddDbContext<BookStoreContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 
@@ -67,7 +113,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 LIVELLO INFRASTRUCTURE che comprende:
 
 => Modelli di REPOSITORIES (Repository Pattern)
-
+=> CONTEXT
 
 Alcuni vantaggi del modello REPOSITORY sono:
 
@@ -88,32 +134,28 @@ o la tecnologia utilizzata per accedere ai database dal livello del modello di d
 Utilizzando questo modello, avremo una classe generica per il repository con le operazioni di base CRUD (Add, GetAll, GetById, Delete, Update, Find, Save) e avremo classi specifiche per azioni specifiche di cui abbiamo bisogno, che va oltre le operazioni di base. 
 
 
+Strato SPA 
+Creeremo un'applicazione separata per il progetto front-end  usando BLAZOR WEB-ASSEMBLY.
 
 
-
-
-
-
-
-
-
+------------------------------------------------------ ANILISI DI PROGETTO ------------------------------------------------------ 
 
 - Services
 Le classi "Servizi" sono dove aggiungeremo le "regole di business" dell'applicazione. 
 Queste classi si trovano tra il Controller e il Repository. 
-Il livello dell'Applicazione non dovrebbe avere accesso al livello dell'Infrastruttura, quindi utilizzeremo le classi di SERVIZI nel livello di Dominio 
-come intermediario tra i Controller nel livello dell'Applicazione e i Repository nel livello Infrastruttura. 
-Inoltre, non dovremmo aggiungere regole di "business" nel Controller, ma saranno i Controller che chiameranno i "Servizi" in cui concentreremo le regole di business e i servizi chiameranno il Repository.
+Il livello dell'Applicazione non dovrebbe avere accesso al livello dell'Infrastruttura, quindi utilizzeremo le classi di SERVIZI 
+nel livello di Dominio come intermediario tra i Controller nel livello dell'Applicazione e i Repository nel livello Infrastruttura. 
+Inoltre, non dovremmo aggiungere regole di "business" nel Controller, ma saranno i Controller che chiameranno i "Servizi" in cui concentreremo 
+le regole di business e i servizi chiameranno il Repository.
 
 
 - Interfaces:
+Interfaccia generica (IBaseRepository):
+Questa interfaccia è per la classe Repository generica che creeremo nel livello Infrastruttura. 
+Per questa classe abbiamo bisogno della firma per l'operazione CRUD (Create, Read, Update, Delete) e anche di un metodo 
+per salvare le modifiche e per la Ricerca.
 
-Interfaccia generica (IRepository):
-Questa interfaccia è per la classe Repository generica che creeremo nel livello Infrastructure. Per questa classe abbiamo bisogno della firma per l'operazione CRUD (Create, Read, Update, Delete) e anche di un metodo per salvare le modifiche e per la ricerca
-
-Nella classe Repository che vado a creare nel progetto 'Infrastructure', implemento questa interfaccia. 
-
-In questa classe abbiamo tutte le operazioni di base:
+In questa classe abbiamo tutte le operazioni di base che eredita da BaseEntity (Id):
 
 => Il metodo Add.
 => Il metodo GetAll 
@@ -122,23 +164,28 @@ In questa classe abbiamo tutte le operazioni di base:
 => Il metodo Remove 
 
 NOTA:
-Il metodo Search serve per cercare un'entità che passa un'espressione lambda per cercare 'qualsiasi' entità con qualsiasi parametro. 
+Il metodo 'Search' serve per cercare un'entità che passa un'espressione lambda per cercare 'qualsiasi' entità con qualsiasi parametro. 
 Questo predicato è un'espressione, quindi puoi usare un'espressione lambda per filtrare gli oggetti, è esattamente lo stesso modo 
 in cui usiamo il where con linq.
 
-Il SaveChanges serve per salvare le modifiche dell'entità. 
-Restituirà un int, che sarà il numero di righe interessate dall'azione di salvataggio.
+Il 'SaveChanges' serve per salvare le modifiche dell'entità. 
+Restituisce un int, che sarà il numero di righe interessate dall'azione di salvataggio.
 
-La classe che implementerà questa interfaccia, deve implementare anche l'interfaccia IDissposible per il rilascio della memoria.
+La classe che implementerà questa interfaccia, deve implementare anche l'interfaccia 'IDissposible' per il rilascio della memoria.
 
 
 Interfacce specifiche:
-Per la classe BookRepository (che implementeremo nel livello Infrastructure), non utilizzeremo GetById e GetAll della classe generica, perché vogliamo restituire la categoria del libro in quei metodi. Se utilizziamo i metodi della classe Repository generica, non porterà il nome della categoria, quindi avremo un GetAll e GetById specifici per questa classe. Avremo anche un metodo che permetterà di restituire i libri filtrati per categoria. Quindi l'interfaccia IBookRepository erediterà da IRepository<Book> e avremo quei metodi specifici:
+Per la classe BookRepository (che implementeremo nel livello Infrastructure), non utilizzeremo GetById e GetAll della classe generica, 
+perché vogliamo restituire la categoria del libro in quei metodi. Se utilizziamo i metodi della classe Repository generica, 
+non porterà il nome della categoria, quindi avremo un GetAll e GetById specifici per questa classe. 
+Avremo anche un metodo che permetterà di restituire i libri filtrati per categoria. 
+Quindi l'interfaccia IBookRepository erediterà da IRepository<Book> e avremo quei metodi specifici:
 
-- GetAll: questo metodo andremo a sovrascrivere perché dobbiamo aggiungere il nome della categoria nel risultato
+- GetAll: questo metodo lo andremo a sovrascrivere perché dobbiamo aggiungere il nome della categoria nel risultato
 - GetById: anche questo metodo verrà sovrascritto per consentire la restituzione del nome della categoria
 - GetBooksByCategory: questo metodo riceverà l'id di una categoria come parametro e restituirà tutti i libri con questo ID di categoria
 
+In override:
 new Task<List<Book>> GetAll();
 new Task<Book> GetById(int id);
 
@@ -170,25 +217,29 @@ CategoryService, implementa l'interfaccia ICategoryService.
 Nota: 
 Utilizziamo Dependency Injection per passare ICategoryRepository nel costruttore della nostra classe. In questo modo la classe non dipende da una classe concreta, ma dipende da un'astrazione (l'interfaccia).
 
-
 BookService, implementa l'interfaccia IBookService.
 Per questa classe vige anche la regola che non permetterà di iscrivere due libri con lo stesso nome. 
-Prima di chiamare il metodo Add o Update, è necessario verificare se il nome è già in uso. Quindi prima cercheremo se esiste già un libro con il nome informato e, se non esiste, possiamo chiamare Aggiungi o Aggiorna.
+Prima di chiamare il metodo Add o Update, è necessario verificare se il nome è già in uso. 
+Quindi prima cercheremo se esiste già un libro con il nome informato e, se non esiste, possiamo chiamare Aggiungi o Aggiorna.
+
 
 
 - Strato Infrastructure:
-
-Nella cartella 'Repositories', creiamo le classi Repository, BookRepository e CategoryRepository.
+Nella cartella 'Repositories', creiamo le classi BaseRepository, BookRepository e CategoryRepository.
 
 
 Repository generico (BaseRepository):
-E' una classe astratta, il che significa che questa classe non può essere istanziata, può solo essere ereditata. Tutte le classi di repository specifiche che creeremo erediteranno da questa classe principale. In questa classe, dobbiamo implementare i metodi dall'Interface IRepository .
+E' una classe 'astratta', il che significa che questa classe non può essere istanziata, 
+può solo essere ereditata. Tutte le classi di repository specifiche che creeremo erediteranno 
+da questa classe principale. In questa classe, dobbiamo implementare i metodi dall'Interface 'IRepository'.
 
-- La proprietà Db è protetta perché tutte le classi che ereditano dal repository possono accedere alla proprietà Db.
-- La proprietà DbSet viene utilizzata come scorciatoia per eseguire le operazioni nel database.
-- Esistono alcuni metodi che sono virtuali e il motivo è perché vogliamo consentire di eseguire un override in un'altra classe di repository specifica, 
-  se necessario. Questo è dalla documentazione ufficiale di Microsoft:
-  (La parola  chiave "virtual" viene utilizzata per modificare un metodo, una proprietà, un indicizzatore o una dichiarazione di evento e consentirne l'override in una classe derivata.)
+- La proprietà Db è di tipo 'PROTECTED' perché tutte le classi che ereditano dal repository possono accedere alla proprietà Db.
+- La proprietà 'DBSet' viene utilizzata come scorciatoia per eseguire le operazioni nel database.
+- Esistono alcuni metodi che sono virtuali e il motivo è perché vogliamo consentire di eseguire un override in un'altra classe 
+  di repository specifica, se necessario. 
+
+  Questo è dalla documentazione ufficiale di Microsoft:
+  (La parola chiave "virtual" viene utilizzata per modificare un metodo, una proprietà, un indicizzatore o una dichiarazione di evento e consentirne l'override in una classe derivata.)
 
 - Implementiamo il metodo Dispose perché questo viene utilizzato per liberare memoria nella nostra applicazione:
   => L'implementazione del metodo Dispose serve principalmente per il rilascio delle risorse non gestite utilizzate dal codice.
@@ -199,6 +250,13 @@ E' una classe astratta, il che significa che questa classe non può essere istanz
 
 - Repository specifici (CategoryRepository e BookRepository):
 
-->  Nella classe CategoryRepository erediteremo da Repository<Category>
--> Nella classe BookRepository erediteremo da Repository<Book> e implementeremo l'interfaccia IBookRepository
+->  Nella classe CategoryRepository erediteremo da BaseRepository e da ICategoryRepository
+-> Nella classe BookRepository erediteremo da BaseRepository e implementeremo l'interfaccia IBookRepository
+
+
+Pacchetti da installare (Infrastructure)
+Install-Package Microsoft.EntityFrameworkCore 
+Install-Package Microsoft.EntityFrameworkCore.Tools 
+Install-Package Microsoft.EntityFrameworkCore.Design 
+
 

@@ -15,13 +15,10 @@ public partial class BookStoreContext : DbContext
     {
     }
 
-    public virtual DbSet<Author> Authors { get; set; }
 
     public virtual DbSet<Book> Books { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
-
-    public virtual DbSet<Publisher> Publishers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -31,16 +28,16 @@ public partial class BookStoreContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Author>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Author__3214EC073ECEFC99");
+        //modelBuilder.Entity<Author>(entity =>
+        //{
+        //    entity.HasKey(e => e.Id).HasName("PK__Author__3214EC073ECEFC99");
 
-            entity.ToTable("Author");
+        //    entity.ToTable("Author");
 
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("NAME");
-        });
+        //    entity.Property(e => e.Name)
+        //        .HasMaxLength(50)
+        //        .HasColumnName("NAME");
+        //});
 
         modelBuilder.Entity<Book>(entity =>
         {
@@ -57,11 +54,6 @@ public partial class BookStoreContext : DbContext
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Book__CategoryId__5629CD9C");
-
-            entity.HasOne(d => d.Publisher).WithMany(p => p.Books)
-                .HasForeignKey(d => d.PublisherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Book__PublisherI__571DF1D5");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -72,17 +64,6 @@ public partial class BookStoreContext : DbContext
 
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .HasColumnName("NAME");
-        });
-
-        modelBuilder.Entity<Publisher>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Publishe__3214EC07FD2661A5");
-
-            entity.ToTable("Publisher");
-
-            entity.Property(e => e.Name)
-                .HasMaxLength(100)
                 .HasColumnName("NAME");
         });
 

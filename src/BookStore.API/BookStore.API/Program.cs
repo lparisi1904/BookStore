@@ -13,17 +13,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container.
 
-// Register database
+// Mappatura del connectionString al database...
+//builder.Services.AddScoped<BookStoreContext>();
 builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
 
-// Registro i servizii per utilizzarli con Dependency Injection nei Controllori
+// => (AddScoped) vengono creati una volta per richiesta client (connessione).
+// da utilizzare con EF core..
+// Utilizzo Scoped perché gli oggetti vengono creati una sola volta per richiesta,
+// in questo modo evito di utilizzare più memoria, una volta che farà sempre riferimento alla stessa locazione di memoria.
+//
+
+// Registro i servizi per utilizzarli con Dependency Injection nei Controllori
+//
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
-
 
 
 //builder.Services.AddAutoMapper();
@@ -51,11 +58,7 @@ builder.Services.AddCors(option =>
     });
 });
 
-
-
 var app = builder.Build();
-
-
 
 
 // Configure the HTTP request pipeline.
@@ -65,22 +68,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//builder.Services.AddCors(x => x.AddPolicy("customPolicy", builder => builder
-//                            .AllowAnyOrigin()
-//                            .AllowAnyMethod()
-//                            .AllowAnyHeader()));
-
-
-
-
-//builder.Services.AddSwaggerGen(c =>
-//{
-//    c.SwaggerDoc("v1", new OpenApiInfo()
-//    {
-//        Title = "BookStore API",
-//        Version = "v1"
-//    });
-//});
 
 // reference to CORS
 builder.Services.AddCors();

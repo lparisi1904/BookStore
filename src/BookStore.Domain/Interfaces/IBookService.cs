@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace BookStore.Domain.Interfaces
 {
+    // utilizzato nel Controller...
+    //
     public interface IBookService: IDisposable //IDisposable: per il rilascio della memoria
     {
         Task<IEnumerable<Book>> GetAll();

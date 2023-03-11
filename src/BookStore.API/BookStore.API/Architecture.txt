@@ -2,42 +2,57 @@
 
 Per applicare Clean Architecture, suddivido l'applicazione in quattro livelli principali:
 
--> Livello di Dominio → il progetto che contiene il livello di dominio, comprese le entità, gli oggetti valore e i servizi di dominio
--> Livello Applicazione → il progetto che contiene il livello applicazione e implementa i servizi applicativi, DTO (oggetti di trasferimento dati) e mappatori. Dovrebbe fare riferimento al progetto Domain .
--> Livello dell'Infrastruttura → Il progetto contiene il livello dell'infrastruttura, inclusa l'implementazione dell'accesso ai dati, registrazione, e-mail e altri meccanismi di comunicazione. Dovrebbe fare riferimento al progetto dell'applicazione .
--> Livello di Presentazione → Il progetto principale contiene il livello di presentazione e implementa l'API Web ASP.NET Core. 
-   Dovrebbe fare riferimento ai progetti Applicazione e Infrastruttura .
-
-Schema di architettura pulito
-Struttura del progetto
-La struttura del progetto per un'architettura pulita nell'API Web ASP.NET Core potrebbe essere simile alla seguente:
+-> Livello di Dominio 
+    → comprende le entità, gli oggetti valore e i servizi di dominio
+-> Livello Applicazione 
+    → implementa i servizi applicativi, DTO e mappatori. 
+    → Dovrebbe fare riferimento al progetto Domain .
+-> Livello dell'Infrastruttura 
+    → include l'implementazione dell'accesso ai dati, registrazione, Dovrebbe fare riferimento al progetto dell'applicazione .
+-> Livello di Presentazione 
+    → Il progetto principale contiene il livello di presentazione e implementa l'API Web ASP.NET Core. 
+    → Dovrebbe fare riferimento ai progetti Applicazione e Infrastruttura .
 
 
 Struttura del progetto:
 -----------------------
-È possibile iniziare creando una soluzione vuota e aggiungendo quattro cartelle di soluzione : Core , Infrastructure , Presentation e Test .
+È possibile iniziare creando una soluzione vuota e aggiungendo quattro cartelle di soluzione : Domain, Infrastructure, Presentation(API), SPA.
 
-Livello di dominio
-Il livello di dominio è un componente fondamentale di Clean Architecture, che rappresenta la logica di business e le entità di un'applicazione. Contiene tutte le regole aziendali e la conoscenza dell'applicazione e dovrebbe essere indipendente da qualsiasi dettaglio o tecnologia di implementazione specifica. Il livello di dominio definisce le entità, gli oggetti valore, i servizi e le regole aziendali che costituiscono il nucleo dell'applicazione.
+=> Livello di dominio
+Il livello di dominio è un componente fondamentale di Clean Architecture, che rappresenta la logica di business e le entità di un'applicazione. 
+Contiene tutte le regole aziendali e la conoscenza dell'applicazione e dovrebbe essere indipendente da qualsiasi dettaglio o tecnologia 
+di implementazione specifica. 
+Il livello di dominio definisce le entità, gli oggetti valore, i servizi e le regole aziendali che costituiscono il nucleo dell'applicazione.
 
-L'obiettivo del livello di dominio è incapsulare la conoscenza dell'applicazione in modo che sia facilmente testabile, riutilizzabile e indipendente da qualsiasi infrastruttura o tecnologia specifica. Questo livello non dovrebbe dipendere da componenti esterni, come database o API, e dovrebbe interagire con essi solo tramite astrazioni. Mantenere il livello di dominio libero da problemi di infrastruttura semplifica la modifica o la sostituzione dei componenti dell'infrastruttura senza influire sulla logica di business dell'applicazione.
+L'obiettivo del livello di dominio è incapsulare la conoscenza dell'applicazione in modo che sia facilmente testabile, riutilizzabile 
+e indipendente da qualsiasi infrastruttura o tecnologia specifica. 
+Questo livello non dovrebbe dipendere da componenti esterni, come database o API, e dovrebbe interagire con essi solo tramite astrazioni. 
+Mantenere il livello di dominio libero da problemi di infrastruttura semplifica la modifica o la sostituzione dei componenti dell'infrastruttura 
+senza influire sulla logica di business dell'applicazione.
 
 Il livello di dominio è un progetto di libreria di classi che si trova all'interno della cartella Core . 
 Il livello di dominio non ha alcun riferimento all'altro livello.
 
 
-Struttura del livello di dominio
+Struttura del livello di dominio:
 Ci sono due cartelle all'interno del progetto Domain: Common e Entities .
 
 ■ Common
-La cartella Common viene utilizzata per archiviare la classe BaseEntity e altri aggregati:
+La cartella Common viene utilizzata per archiviare la classe BaseEntity ed eventuali altri aggregati:
 
      
-Livello applicazione
-Il livello dell'applicazione è un componente di Clean Architecture che funge da ponte tra il livello del dominio e le interfacce esterne di un'applicazione, come il livello di presentazione o il livello di accesso ai dati. Questo livello coordina le interazioni tra il livello del dominio e i componenti esterni e trasforma i dati tra i diversi livelli.
-Il livello dell'applicazione contiene i servizi e le classi dell'applicazione che contengono la logica di business dell'applicazione. Questi servizi interagiscono con il livello di dominio per eseguire attività quali la creazione o l'aggiornamento di entità o l'invocazione di servizi di dominio. Il livello dell'applicazione funge anche da intermediario tra il livello del dominio e il livello di presentazione o livello di accesso ai dati, traducendo gli oggetti del dominio in oggetti di presentazione o oggetti di accesso ai dati e viceversa.
+=> Livello applicazione:
+Il livello dell'applicazione è un componente di Clean Architecture che funge da ponte tra il livello del dominio e le interfacce esterne 
+di un'applicazione, come il livello di presentazione o il livello di accesso ai dati. 
+Questo livello coordina le interazioni tra il livello del dominio e i componenti esterni e trasforma i dati tra i diversi livelli.
+Il livello dell'applicazione contiene i servizi e le classi dell'applicazione che contengono la logica di business dell'applicazione. 
+Questi servizi interagiscono con il livello di dominio per eseguire attività quali la creazione o l'aggiornamento di entità o l'invocazione 
+di servizi di dominio. 
+Il livello dell'applicazione funge anche da intermediario tra il livello del dominio e il livello di presentazione o livello di accesso ai dati, 
+traducendo gli oggetti del dominio in oggetti di presentazione o oggetti di accesso ai dati e viceversa.
 Il livello dell'applicazione non dovrebbe contenere alcun codice specifico dell'infrastruttura e non dovrebbe dipendere da alcuna tecnologia specifica o meccanismo di accesso ai dati. Dovrebbe invece utilizzare astrazioni e interfacce per interagire con componenti esterni, rendendo più semplice la loro modifica o sostituzione senza influire sulla logica di business principale dell'applicazione.
-Il livello dell'applicazione è un progetto di libreria di classi che si trova all'interno della cartella Core . Il livello dell'applicazione deve fare riferimento al livello del dominio.
+Il livello dell'applicazione è un progetto di libreria di classi che si trova all'interno della cartella Core . 
+Il livello dell'applicazione deve fare riferimento al livello del dominio.
 
 
 Struttura del livello dell'applicazione

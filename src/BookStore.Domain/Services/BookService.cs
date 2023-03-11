@@ -63,22 +63,14 @@ namespace BookStore.Domain.Services
             return await _bookRepository.Search(c => c.Title.Contains(bookTitle));
         }
 
-        public async Task<IEnumerable<Book>> SearchBookWithCategory(string searchedValue)
+        public async Task<IEnumerable<Book>> SearchBookWithCategory(string searchValue)
         {
-            return await _bookRepository.SearchBookWithCategory(searchedValue);
+            return await _bookRepository.SearchBookWithCategory(searchValue);
         }
 
         public void Dispose()
         {
             _bookRepository?.Dispose();
         }
-
-        //public async Task<bool> Remove(Book book)
-        //{
-        //    await _bookRepository.Remove(book);
-        //    return true;
-        //}
-
-
     }
 }

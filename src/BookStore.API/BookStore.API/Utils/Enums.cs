@@ -2,16 +2,18 @@
 using System.Reflection;
 
 namespace BookStore.API.Utils
-{
+{ 
     public static class Enums
     {
+        // codifica di messaggi status EndPoint per il livello API
         public static string GetDescription(this Enum value)
         {
-            FieldInfo fi = value.GetType()
+            FieldInfo fieldInfo = value.GetType()
                 .GetField(value.ToString());
 
             DescriptionAttribute[] attributes =
-                (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                (DescriptionAttribute[]) fieldInfo.
+                    GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             if (attributes != null && attributes.Length > 0)
                 return attributes[0].Description;
@@ -59,36 +61,6 @@ namespace BookStore.API.Utils
 
             [Description("Cancellazione Categoria non riuscita.")]
             CategoryDeletedKO = 1200
-        }
-
-        public enum Genre
-        {
-            Fantasy,
-            Adventure,
-            Romance,
-            Contemporary,
-            Dystopian,
-            Mystery,
-            Horror,
-            Thriller,
-            Paranormal,
-            Historical_fiction,
-            Science_Fiction,
-            Childrens,
-            Memoir,
-            Cooking,
-            Art,
-            Self_help,
-            Personal,
-            Development,
-            Motivational,
-            Health,
-            History,
-            Travel,
-            How_to,
-            Families_Relationships,
-            Humor,
-            Biography
         }
     }
 }

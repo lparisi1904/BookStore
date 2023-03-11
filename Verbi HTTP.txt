@@ -1,0 +1,34 @@
+Verbi HTTP
+--------------------
+HTTP definisce un insieme di metodi di richiesta per indicare l'azione desiderata da eseguire per una determinata risorsa. 
+Sebbene possano anche essere sostantivi, questi metodi di richiesta sono a volte indicati come verbi HTTP .
+
+I verbi di base sono:
+
+GET — che richiedono una rappresentazione di una risorsa specifica. Viene utilizzato solo per restituire dati.
+POST — che viene utilizzato per inviare un'entità a una risorsa specifica. 
+       Generalmente utilizziamo POST per creare una nuova risorsa.
+PUT — che viene utilizzato per sostituire (aggiornare) parte o tutte le proprietà di una risorsa. 
+       Generalmente utilizziamo PUT per aggiornare una risorsa.
+PATCH — che viene utilizzato per applicare modifiche parziali.
+DELETE — che viene utilizzato per eliminare una risorsa.
+Esistono altri verbi, ma questi sono i verbi più comuni utilizzati per le operazioni di base.
+
+
+Codice di stato
+----------------
+Il codice di stato viene restituito nel risultato dell'API. 
+Quando il client effettua una richiesta a un'API, restituirà un codice di stato dal server dopo che la richiesta è stata effettuata. 
+
+I codici di stato della rete sono:
+
+200 — Ok : questo stato indica che la richiesta è andata a buon fine.
+201 — Creato : questo stato indica che la richiesta è andata a buon fine e come risultato è stata creata una nuova risorsa. Di solito viene restituito dopo una richiesta POST.
+204 — Nessun contenuto : possiamo restituire questo stato quando non vogliamo restituire nulla.
+400 — BadRequest : questo è uno stato generico per errore. Significa che il server non è riuscito a comprendere la richiesta a causa di una sintassi non valida.
+401 — Non autorizzato : questo stato indica che il client non è autenticato e deve autenticarsi per eseguire la richiesta.
+403 — Proibito : questo stato significa che il client è autenticato ma non ha il permesso di fare quello che sta cercando di fare. A differenza di 401, l'identità del client è nota al server.
+404 — Non trovato : questo stato indica che il server non è riuscito a trovare la risorsa richiesta.
+500 - Errore interno del server : questa è una risposta generica dall'API REST, significa che il server ha riscontrato una situazione che non sa come gestire.
+503 — Servizio non disponibile : questo stato indica che il server non è pronto a gestire la richiesta.
+Esistono altri codici di stato, ma questi sono i più comuni.

@@ -22,5 +22,4 @@ public partial class Book : BaseEntity
 
     public virtual Category Category { get; set; } = null!;
 
-    public virtual Publisher Publisher { get; set; } = null!;
 }
