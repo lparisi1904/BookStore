@@ -15,7 +15,6 @@ public partial class BookStoreContext : DbContext
     {
     }
 
-
     public virtual DbSet<Book> Books { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -28,17 +27,6 @@ public partial class BookStoreContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<Author>(entity =>
-        //{
-        //    entity.HasKey(e => e.Id).HasName("PK__Author__3214EC073ECEFC99");
-
-        //    entity.ToTable("Author");
-
-        //    entity.Property(e => e.Name)
-        //        .HasMaxLength(50)
-        //        .HasColumnName("NAME");
-        //});
-
         modelBuilder.Entity<Book>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Book__3214EC07442FC9FA");

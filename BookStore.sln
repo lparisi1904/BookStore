@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi Progetto", "Analisi
 	ProjectSection(SolutionItems) = preProject
 		AnalisiStrutturale.txt = AnalisiStrutturale.txt
 		src\BookStore.API\BookStore.API\Architecture.txt = src\BookStore.API\BookStore.API\Architecture.txt
+		Dependency Injection.txt = Dependency Injection.txt
 		SqlCreateDb.sql = SqlCreateDb.sql
 		Verbi HTTP.txt = Verbi HTTP.txt
 	EndProjectSection

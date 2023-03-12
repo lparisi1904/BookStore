@@ -5,21 +5,23 @@ ARCHITETTURA E ANALISI STRUTTURALE DEL CODICE
 SCOPO: 
  Eseguire operazioni CRUD per libri e categorie di libri. 
 
-=> UtilizzO Swagger per documentare la nostra API (endpoint) e inserisco anche il codice in GitHub.
+=> Utilizzo Swagger per documentare la nostra API (endpoint) e inserisco anche il codice in GitHub.
 
 
 Avremo quattro livelli per questa applicazione. 
 
 
-
 - Livello APPLICATION (API) che comprende:
 
 => CONTROLLER
-=> DTOs (per trasferire dati tra i livelli) => 2 Vantaggi con Dtos: 
+=> DTOs (per trasferire dati tra i livelli) 
+=> 2 Vantaggi con Dtos: 
     1- non si è costretti a passare TUTTI i dati (riduce la quantità di dati da trasferire tra i Livelli) 
     2- possibilità di 'nascondare' dati sensibili
 
-Intallare:
+
+Intallazioni a livello Application:
+=> EF Core Design:
 Install-Package Microsoft.EntityFrameworkCore.Design
 
 => Swagger:
@@ -36,11 +38,12 @@ services.AddSwaggerGen(c =>
 });
 
 
+Controller:
 [ProducesResponseType(StatusCodes.xxx)]
 sopra ogni metodo è stato aggiunto l'attributo. 
 Questo perché un metodo può avere più di un tipo di restituzione, ad esempio può restituire un NotFound nel caso in cui 
 il record non esista o può restituire un Ok se il valore viene restituito. 
-L'aggiunta di questo attributo produrrà dettagli di risposta più descrittivi per l'API Web, 
+L'aggiunta di questi attributi produrrà dettagli di risposta più descrittivi per l'API Web, 
 quindi quando controlliamo l'API in Swagger, vedremo dettagli più descrittivi su quali codici di stato possono essere restituiti dall'API.
 
 es.
@@ -88,7 +91,7 @@ E lo facciamo con l'uso di Interfacce..
 l'interfaccia descrive semplicemente quali sono i membri pubblici che una classe dovrà implementare e non il modo in cui deve implementarli. 
 Il modo, invece, lo definisco nella classe 'Service' che è un'implementazione CONCRETA dell'interfaccia.
 
-Poi mi sposto nel Controller e faccio in modo che abbia una dipendenza da tale interfaccia. 
+nel Controller e faccio in modo che abbia una dipendenza da tale interfaccia. 
 Un'istanza dell'interfaccia dovrà essere fornita dall'esterno.
 Le dipendenze le possiamo esprimere come parametri del costruttore. 
 

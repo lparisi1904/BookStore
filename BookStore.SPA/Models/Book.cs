@@ -6,20 +6,20 @@ namespace BookStore.SPA.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required")]
-        [StringLength(150, ErrorMessage = "The field {0} must be between {2} and {1} characters", MinimumLength = 2)]
+        [Required(ErrorMessage = "Il campo {0} è obbligatorio")]
+        [StringLength(150, ErrorMessage = "Il campo {0} deve essere compreso tra i caratteri {2} e {1}.", MinimumLength = 2)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required")]
-        [StringLength(150, ErrorMessage = "The field {0} must be between {2} and {1} characters", MinimumLength = 2)]
+        [Required(ErrorMessage = "Il campo {0} è obbligatorio")]
+        [StringLength(150, ErrorMessage = "Il campo {0} deve essere compreso tra i caratteri {2} e {1}.", MinimumLength = 2)]
         public string Author { get; set; }
 
         public string Description { get; set; }
 
         public int? YearBook { get; set; }
 
-        [Required(ErrorMessage = "The field Category is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "The field Category is required")]
+        [Required(ErrorMessage = "Il campo Categoria è obbligatorio")]
+        [Range(1, int.MaxValue, ErrorMessage = "Il campo Categoria è obbligatorio")]
         public int CategoryId { get; set; }
 
         public string CategoryName { get; set; }

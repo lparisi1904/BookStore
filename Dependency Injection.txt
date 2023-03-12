@@ -1,0 +1,27 @@
+-----------------------------------
+SCOPO della  Dependency Injection
+-----------------------------------
+fare in modo che i componenti siano facilmente sostituibili. 
+E lo facciamo con l'uso di Interfacce..
+l'interfaccia descrive semplicemente quali sono i membri pubblici che una classe dovrà implementare e non il modo in cui deve implementarli. 
+Il modo, invece, lo definisco nella classe 'Service' che è un'implementazione CONCRETA dell'interfaccia.
+
+Poi mi sposto nel Controller e faccio in modo che abbia una dipendenza da tale interfaccia. 
+Un'istanza dell'interfaccia dovrà essere fornita dall'esterno.
+Le dipendenze le possiamo esprimere come parametri del costruttore. 
+
+Esempio pratico:
+private readonly IBookService _bookService;
+
+// Ecco il costruttore. 
+// copiamo su un campo privato (_bookService) in modo che sia accessibile dalle Action...
+public NomeController(ICourseService bookService)
+{
+    this._bookService = bookService;
+}
+
+// nella classe nel Programs 'inietto' i Servizi (Interfacce + Classi concrete):
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
