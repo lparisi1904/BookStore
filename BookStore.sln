@@ -12,10 +12,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi Progetto", "Analisi Progetto", "{E1FC3262-C45D-41C5-8934-12415B9E166A}"
 	ProjectSection(SolutionItems) = preProject
 		AnalisiStrutturale.txt = AnalisiStrutturale.txt
+		API.txt = API.txt
 		CleanArchitecture.txt = CleanArchitecture.txt
 		Dependency Injection.txt = Dependency Injection.txt
 		SqlCreateDb.sql = SqlCreateDb.sql
-		Verbi HTTP.txt = Verbi HTTP.txt
+		Verbi_HTTP.txt = Verbi_HTTP.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5D31EDB0-81F8-416D-8016-F1CF2C7DF303}"

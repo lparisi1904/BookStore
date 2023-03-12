@@ -5,7 +5,7 @@ ARCHITETTURA E ANALISI STRUTTURALE DEL CODICE
 SCOPO: 
  Eseguire operazioni CRUD per libri e categorie di libri. 
 
-=> Utilizzo Swagger per documentare la nostra API (endpoint) e inserisco anche il codice in GitHub.
+=> Ho utilizzato Swagger per documentare gli endpoint degll'API e inserito anche il codice in GitHub.
 
 
 Avremo quattro livelli per questa applicazione. 

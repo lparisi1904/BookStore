@@ -6,7 +6,7 @@ namespace BookStore.Domain.Interfaces
     {
         /// <summary>
         /// Per la classe BookRepository non utilizzeremo GetById e GetAll della classe GENERICA, 
-        /// perché vogliamo restituire la categoria del libro in quei metodi. 
+        /// perché vogliamo restituire la CATEGORIA del libro in quei metodi. 
         /// se utilizziamo i metodi della classe Repository generica, non porterà il nome della categoria, 
         ///quindi avremo un GetAll e GetById specifici per questa classe.
         /// </summary>
@@ -17,6 +17,5 @@ namespace BookStore.Domain.Interfaces
         new Task<Book> GetById(long id);
         Task<IEnumerable<Book>> GetBooksByCategory(long categoryId);
         Task<IEnumerable<Book>> SearchBookWithCategory(string searchValue);
-
     }
 }

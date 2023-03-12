@@ -6,11 +6,11 @@ namespace BookStore.SPA.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Il campo {0} è obbligatorio")]
+        [Required(ErrorMessage = "Il campo Titolo è obbligatorio")]
         [StringLength(150, ErrorMessage = "Il campo {0} deve essere compreso tra i caratteri {2} e {1}.", MinimumLength = 2)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "Il campo {0} è obbligatorio")]
+        [Required(ErrorMessage = "Il campo Autore è obbligatorio")]
         [StringLength(150, ErrorMessage = "Il campo {0} deve essere compreso tra i caratteri {2} e {1}.", MinimumLength = 2)]
         public string Author { get; set; }
 

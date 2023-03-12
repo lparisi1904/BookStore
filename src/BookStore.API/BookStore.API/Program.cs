@@ -14,12 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 //Add services to the container.
 //------------------------------
 
-// Mappatura del connectionString al database...
+// Mappatura del connectionString (ConnStr) al Db...
 builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
 
-// => (AddScoped) vengono creati una volta per richiesta client (connessione).
-// da utilizzare con EF core..
+// (AddScoped)
+// vengono creati una volta per richiesta client (connessione).
+// => da utilizzare con EF core..
 // Utilizzo Scoped perché gli oggetti vengono creati una sola volta per richiesta,
 // in questo modo evito di utilizzare più memoria, una volta che farà sempre riferimento alla stessa locazione di memoria.
 //
@@ -31,12 +32,6 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBookService, BookService>();
-
-
-//builder.Services.AddAutoMapper();
-//// Register Library Service to use it with Dependency Injection in Controllers
-//builder.Services.AddScoped<IService<Author, AuthorDetailsDto>, AuthorDataManager>();
-
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -52,9 +47,9 @@ builder.Services.AddCors(option =>
     policy =>
     {
         policy
-     .AllowAnyHeader()
-     .AllowAnyMethod()
-     .AllowAnyOrigin();
+         .AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowAnyOrigin();
     });
 });
 

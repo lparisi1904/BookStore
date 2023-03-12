@@ -30,16 +30,18 @@ namespace BookStore.Domain.Services
             return await _bookRepository.GetById(id);
         }
 
-        public async Task<Book> Add(Book book)
+        public async Task<Book?> Add(Book book)
         {
-            if (_bookRepository.Search(b => b.Title == book.Title).Result.Any())
-                return null;
+            if (_bookRepository
+                .Search(b => b.Title == book.Title)
+                .Result.Any())
+                 return null;
 
             await _bookRepository.Add(book);
             return book;
         }
 
-        public async Task<Book> Update(Book book)
+        public async Task<Book?> Update(Book book)
         {
             if (_bookRepository.Search(b => b.Title == book.Title && b.Id != book.Id).Result.Any())
                 return null;

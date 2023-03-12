@@ -20,6 +20,7 @@ namespace BookStore.Domain.Tests
     {
         private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
         private readonly Mock<IBookService> _bookServiceMock;
+
         private readonly CategoryService _categoryService;
         
         public CategoryServiceTests()
@@ -119,7 +120,8 @@ namespace BookStore.Domain.Tests
         [Fact]
         public async void GetById_ShouldCallGetByIdFromRepository_OnlyOnce()
         {
-            _categoryRepositoryMock.Setup(x => x.GetById(1)).ReturnsAsync((Category)null);
+            _categoryRepositoryMock.Setup(x => x.GetById(1))
+                .ReturnsAsync((Category)null);
 
             await _categoryService.GetById(1);
 
@@ -268,7 +270,7 @@ namespace BookStore.Domain.Tests
         [Fact]
         public async void Search_ShouldReturnAListOfCategory_WhenCategoriesWithSearchedNameExist()
         {
-            var categoryList = CreateCategoryList();
+            List<Category> categoryList = CreateCategoryList();
             var searchedCategory = CreateCategory();
             var categoryName = searchedCategory.Name;
 
@@ -281,7 +283,6 @@ namespace BookStore.Domain.Tests
             Assert.NotNull(result);
             Assert.IsType<IEnumerable<Category>>(result);
         }
-
 
 
         [Fact]

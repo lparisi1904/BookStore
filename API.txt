@@ -1,0 +1,159 @@
+API
+---------
+Sono servizi Web basati su HTTP.  
+Fornisce un set di funzionalità di base per aiutarti ad accelerare la distribuzione di nuovi prodotti e servizi.
+ai browser e a tutte le app per dispositivi moderni in modo rapido, sicuro e semplice,
+Stanno diventando fondamentali per ogni aspetto del business. Le applicazioni popolari delle API includono la creazione di nuove applicazioni mobili, la creazione di esperienze omnicanale, il miglioramento dell'e-commerce e lo sviluppo di processi aziendali più efficienti.
+
+Essi contribuiscono ad:
+Accelerare la trasformazione digitale
+Mantenimento dell'integrità e della sicurezza dei dati
+Migliorare l'esperienza del cliente
+Protezione della sicurezza dei dati proprietari
+Generazione di nuove fonti di reddito 
+
+
+Swagger: 
+Strumento utilizzato per testare gli ENDPOINT dell'API (GET, POST, PUT..)
+In Produzione cosa viene rilasciato ??
+
+ABILITA CORS
+Se distribuirai questa API da qualche parte e la utilizzerai con qualche altra applicazione, genererà alcune eccezioni relative a CORS .
+Program:
+services.AddCors(option => option.AddPolicy("MyBlogPolicy", builder => {
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+
+}));
+
+
+INSTALLA I PACCHETTI NUGET PER ENTITY FRAMEWORK
+- Microsoft.EntityFrameworkCore.SqlServer 
+- Microsoft.EntityFrameworkCore.SqlServer.Design 
+- Microsoft.EntityFrameworkCore.Tools
+
+command:
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+oppure
+Install-Package Microsoft.EntityFrameworkCore.SqlServer
+
+ACTION
+Tipi restituiti da un'azione..Differenza/Significato:
+
+=> https://learn.microsoft.com/it-it/aspnet/core/web-api/action-return-types?view=aspnetcore-7.0
+
+- ActionResult
+- IActionResult
+- CreatedAtAction:
+
+Un codice di stato 201 viene generato dal CreatedAtAction metodo quando viene creato un prodotto. In questo percorso di codice l'oggetto Product viene fornito nel corpo della risposta. Viene fornita un'intestazione Location di risposta contenente l'URL del prodotto appena creato.
+ES.
+_productContext.Products.Add(product);
+await _productContext.SaveChangesAsync();
+
+return CreatedAtAction(nameof(GetById_ActionResultOfT), new { id = product.Id }, product);
+
+
+TIPI RESTITUITI:
+- JSON
+- XML
+
+
+verbi HTTP:
+-----------
+REST utilizza le intestazioni incorporate HTTP per eseguire operazioni CRUD.
+
+Se il server non può corrispondere a nessuno dei tipi di supporto elencati, deve restituire il codice di stato HTTP 406 (non accettabile).
+
+Metodo GET: equivale alla READ della CRUD. 
+- Un metodo GET riuscito restituisce in genere il codice di stato HTTP 200 (OK). 
+- Se la richiesta è stata soddisfatta ma non è incluso alcun corpo di risposta nella risposta HTTP, dovrebbe restituire il codice di stato HTTP 204 
+  (Nessun contenuto), ad esempio, un'operazione di ricerca che non produce corrispondenze 
+
+
+Metodo POST: CREA una risorsa.
+-> Se un metodo POST crea una nuova risorsa, restituisce il codice di stato HTTP 201 (Creato). 
+   è la risposta standard per un metodo che crea una nuova risorsa sul server. HTTP 201 HTTP POST.
+-> Se il metodo esegue alcune elaborazioni ma non crea una nuova risorsa, può restituire il codice di stato HTTP 200 e includere il risultato       
+   dell'operazione nel corpo della risposta. 
+   In alternativa, se non viene restituito alcun risultato, il metodo può restituire il codice di stato HTTP 204 (Nessun contenuto) 
+   senza corpo della risposta.
+-> Se il client inserisce dati non validi nella richiesta, il server deve restituire il codice di stato HTTP 400 (richiesta non valida). 
+
+
+Metodo PUT: Una richiesta PUT AGGIORNA una risorsa esistente.
+-> Se un metodo PUT crea una nuova risorsa, restituisce il codice di stato HTTP 201 (Creato), come il POST.
+-> Se il metodo aggiorna una risorsa esistente, restituisce 200 (OK) o 204 (Nessun contenuto).
+-> potrebbe non essere possibile aggiornare una risorsa esistente. In tal caso, è consigliabile restituire il codice di stato HTTP 409    (conflitto).
+
+
+Metodo PATCH: Una richiesta PATCH esegue un AGGIORNAMENTO PARZIALE di una risorsa esistente.
+Alcune condizioni di errore tipiche che possono verificarsi durante l'elaborazione di una richiesta PATCH.
+-> 415 Il formato del documento patch non è supportato.
+-> 400 Documento patch non valido.
+-> 409 Il documento della patch è valido, ma le modifiche non possono essere applicate alla risorsa nello stato corrente.
+
+
+Metodo DELETE: cancella una risorsa (entità esistente dal database.)
+-> Se l'operazione di eliminazione ha esito positivo, il server Web deve rispondere con il codice di stato HTTP 204
+-> Se la risorsa non esiste, il server Web può restituire HTTP 404 (Non trovato).
+
+
+URI:
+E' una sequenza di caratteri che identifica universalmente ed univocamente una risorsa. Sono esempi di URI: un indirizzo web (URL), un documento, un indirizzo di posta elettronica, il codice ISBN di un libro, un numero di telefono col prefisso internazionale.
+
+Il SOAP 
+-> E'un protocollo basato su XML mentre REST non è un protocollo piuttosto è un modello architettonico, cioè un'architettura basata sulle risorse.
+-> SOAP ha specifiche sia per l'implementazione stateless che per l'implementazione state-full, mentre REST è completamente stateless.
+-> SOAP applica il formato dei messaggi come XML mentre REST non applica il formato dei messaggi come XML o JSON.
+-> Il messaggio SOAP è costituito da una busta che include intestazioni SOAP e un corpo per archiviare le informazioni effettive che si desidera inviare mentre REST utilizza le intestazioni incorporate HTTP (con una varietà di tipi di supporto) per archiviare le informazioni e utilizza i metodi HTTP come GET, POST, PUT, PATCH e DELETE per eseguire operazioni CRUD.
+-> Le prestazioni di SOAP sono lente rispetto a REST.
+
+
+WCF 
+-> È un framework utilizzato per lo sviluppo di SOA (applicazioni orientate ai servizi).
+-> WCF (Windows Communication Foundation) è una delle opzioni disponibili in .NET Framework per lo sviluppo di servizi SOAP e REST
+-> Il problema con WCF è che è necessaria molta configurazione per trasformare un servizio WCF (servizio SOAP) in un servizio REST. 
+->  la scelta più naturale per lo sviluppo di servizi REST è ASP.NET API Web.
+->  ASP.NET API Web è specificamente progettata per questo scopo, ovvero per lo sviluppo di servizi Restful.
+-> WCF può essere utilizzato solo dai client in grado di comprendere XML. 
+-> WCF supporta protocolli come HTTP, TCP, named pipe e così via.
+
+
+
+
+OPERAZIONI ASINCRONE:
+A volte un'operazione POST, PUT, PATCH o DELETE potrebbe richiedere un'elaborazione che richiede un po' di tempo per essere completata. Se si attende il completamento prima di inviare una risposta al client, potrebbe verificarsi una latenza inaccettabile. In tal caso, è consigliabile rendere l'operazione asincrona. Restituisce il codice di stato HTTP 202 (Accettato) per indicare che la richiesta è stata accettata per l'elaborazione ma non è stata completata.
+
+
+Insiemi vuoti nei corpi dei messaggi
+Ogni volta che il corpo di una risposta corretta è vuoto, il codice di stato deve essere 204 (Nessun contenuto). Per i set vuoti, ad esempio una risposta a una richiesta filtrata senza elementi, il codice di stato deve essere ancora 204 (Nessun contenuto), non 200 (OK).
+
+
+
+
+Cosa sono i servizi RESTful?
+ è un modello architettonico utilizzato per lo scambio di dati in un ambiente distribuito. Il modello architettonico REST considera ogni servizio come una risorsa e un client può accedere a queste risorse utilizzando metodi di protocollo HTTP quali GET, POST, PUT, PATCH e DELETE.
+
+
+RISORSA:
+----------
+Rappresentano in genere entità di dati. Il prodotto, il dipendente, il cliente, il paese, lo stato, la città, ecc. sono tutte risorse
+
+
+ASP.NET Web API
+È un framework che ci aiuta a sviluppare servizi basati su HTTP, ovvero servizi restful.
+
+WCF
+È un framework utilizzato per lo sviluppo di SOA (applicazioni orientate ai servizi).
+WCF può essere utilizzato solo dai client in grado di comprendere XML. WCF supporta protocolli come HTTP, TCP, named pipe e così via.
+
+
+Perché devo scegliere ASP.NET API WEB?
+un'applicazione web non è sufficiente o sufficiente per raggiungere tutti i suoi clienti. 
+utilizzano diversi tipi di dispositivi come cellulari, iPhone, tablet, ecc. 
+Quindi, se vogliamo esporre i nostri dati (dati aziendali) ai browser e a tutte queste app per dispositivi moderni in modo rapido, sicuro e semplice, allora dovremmo avere un'API che dovrebbe essere compatibile con i browser e tutti questi dispositivi moderni.
+
+
+
+
+

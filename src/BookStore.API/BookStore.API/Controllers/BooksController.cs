@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BookStore.API.Dtos.Book;
 using Mapster;
 using BookStore.API.Utils;
-using static BookStore.API.Utils.Enums;
+using static BookStore.API.Utils.ResponseMessageHttp;
 using System.Net;
 using Stripe;
 using BookStore.Domain.Entities;
@@ -30,7 +30,7 @@ namespace BookStore.API.Controllers
             var books = await _bookService.GetAll(); 
 
             if (!books.Any() || books == null)
-                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
+                return base.NotFound(ResponseMessageHttp.StatusCode.BookNotFound.GetDescription());
 
             var result = books.Adapt<IEnumerable<BookResultDto>>();
 
@@ -47,7 +47,7 @@ namespace BookStore.API.Controllers
             var book = await _bookService.GetById(id);
 
             if (book == null) { 
-                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription()); 
+                return base.NotFound(ResponseMessageHttp.StatusCode.BookNotFound.GetDescription()); 
             };
 
             var result = book.Adapt<BookResultDto>();
@@ -66,7 +66,7 @@ namespace BookStore.API.Controllers
             var books = await _bookService.GetBooksByCategory(categoryId);
 
             if (!books.Any()) { 
-                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription()); 
+                return base.NotFound(ResponseMessageHttp.StatusCode.BookNotFound.GetDescription()); 
             }
 
             var result = books.Adapt<IEnumerable<BookResultDto>>();
@@ -87,7 +87,7 @@ namespace BookStore.API.Controllers
             var bookAdded = await _bookService.Add(book);
 
             if (bookAdded == null) 
-                return base.BadRequest(Enums.StatusCode.CategorySuccessOK.GetDescription());
+                return base.BadRequest(ResponseMessageHttp.StatusCode.CategorySuccessOK.GetDescription());
              
 
             return Ok(book.Adapt<BookResultDto>());
@@ -101,14 +101,14 @@ namespace BookStore.API.Controllers
         public async Task<IActionResult> UpdateBook(long id, BookEditDto bookDto)
         {
             if (id != bookDto.Id) 
-                return base.BadRequest(Enums.StatusCode.BookNotMatch.GetDescription());
+                return base.BadRequest(ResponseMessageHttp.StatusCode.BookNotMatch.GetDescription());
 
             if (!ModelState.IsValid) return BadRequest();
 
             await _bookService.Update(bookDto.Adapt<Book>());
 
             //return Ok(bookDto);
-            return base.Ok(Enums.StatusCode.BookSuccessUpdate.GetDescription());
+            return base.Ok(ResponseMessageHttp.StatusCode.BookSuccessUpdate.GetDescription());
         }
 
 
@@ -120,11 +120,11 @@ namespace BookStore.API.Controllers
         {
             var book = await _bookService.GetById(id);
             if (book == null) return 
-                    base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
+                    base.NotFound(ResponseMessageHttp.StatusCode.BookNotFound.GetDescription());
 
             await _bookService.Remove(book);
 
-            return base.Ok(Enums.StatusCode.BookSuccessDeleted.GetDescription());
+            return base.Ok(ResponseMessageHttp.StatusCode.BookSuccessDeleted.GetDescription());
         }
 
         [HttpGet]
@@ -138,7 +138,7 @@ namespace BookStore.API.Controllers
             var books = book.Adapt<List<Book>>();
 
             if (books == null || !books.Any())  
-                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
+                return base.NotFound(ResponseMessageHttp.StatusCode.BookNotFound.GetDescription());
 
             return Ok(books);
         }
@@ -155,7 +155,7 @@ namespace BookStore.API.Controllers
             var books = searchBook.Adapt<List<Book>>();
 
             if (!books.Any())
-                return base.NotFound(Enums.StatusCode.BookNotFound.GetDescription());
+                return base.NotFound(ResponseMessageHttp.StatusCode.BookNotFound.GetDescription());
 
             return Ok(books.Adapt<IEnumerable<BookResultDto>>());
         }

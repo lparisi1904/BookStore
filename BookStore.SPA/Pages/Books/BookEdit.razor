@@ -10,7 +10,7 @@
         <DataAnnotationsValidator></DataAnnotationsValidator>
 
         <div class="form-group row justify-content-center">
-            <label for="title" class="col-form-label col-sm-2">Title: </label>
+            <label for="title" class="col-form-label col-sm-2">Titolo: </label>
             <div class="col-sm-8 col-md-5">
                 <InputText id="title" class="form-control" @bind-Value="@Book.Title" placeholder="Titolo"></InputText>
                 <ValidationMessage For="@(() => Book.Title)" />
@@ -18,14 +18,14 @@
         </div>
 
         <div class="form-group row justify-content-center">
-            <label for="description" class="col-form-label col-sm-2">Description: </label>
+            <label for="description" class="col-form-label col-sm-2">Descrizione: </label>
             <div class="col-sm-8 col-md-5">
                 <InputTextArea id="description" class="form-control" @bind-Value="@Book.Description" placeholder="Descrizione"></InputTextArea>
             </div>
         </div>
 
         <div class="form-group row justify-content-center">
-            <label for="author" class="col-form-label col-sm-2">Author: </label>
+            <label for="author" class="col-form-label col-sm-2">Autore: </label>
             <div class="col-sm-8 col-md-5">
                 <InputText id="author" class="form-control" @bind-Value="@Book.Author" placeholder="Autore"></InputText>
                 <ValidationMessage For="@(() => Book.Author)" />
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group row justify-content-center">
-            <label for="categoryId" class="col-form-label col-sm-2">Category: </label>
+            <label for="categoryId" class="col-form-label col-sm-2">Categoria: </label>
             <div class="col-sm-8 col-md-5">
                 <InputSelect id="categoryId" @bind-Value="@Book.CategoryId" class="form-select form-control" placeholder="Categoria">
                     <option selected disabled hidden value="0">Seleziona una categoria</option>
@@ -46,10 +46,12 @@
             </div>
         </div>
 
-   
+         <div class="col-sm-8 col-md-11">
+            <br />
+            <button type="submit" class="btn btn-success mr-2">Salva libro</button>
+            <button class="btn btn-info" type="submit" @onclick="@NavigateToBooksPage">Annulla</button>
+        </div>
 
-        <button type="submit" class="btn btn-success mr-2">Salva libro</button>
-
-        <button class="btn btn-info" type="submit" @onclick="@NavigateToBooksPage">Annulla</button>
+        
     </EditForm>
 </section>

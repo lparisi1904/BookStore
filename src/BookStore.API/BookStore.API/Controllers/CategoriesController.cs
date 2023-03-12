@@ -38,7 +38,7 @@ namespace BookStore.API.Controllers
             var category = await _categoryService.GetById(id);
 
             if (category == null) 
-                return base.NotFound(Enums.StatusCode.CategoryNotFound.GetDescription());
+                return base.NotFound(ResponseMessageHttp.StatusCode.CategoryNotFound.GetDescription());
 
             // Map Entity to Dto..
             var categoryDto = category.Adapt<CategoryResultDto>();
@@ -65,7 +65,7 @@ namespace BookStore.API.Controllers
         public async Task<IActionResult> UpdateCategory(long id, CategoryEditDto categoryDto)
         {
             if (id != categoryDto.Id) 
-                return base.BadRequest(Enums.StatusCode.CategoryNotMatch.GetDescription());
+                return base.BadRequest(ResponseMessageHttp.StatusCode.CategoryNotMatch.GetDescription());
 
             if (!ModelState.IsValid) return BadRequest();
 
@@ -84,14 +84,14 @@ namespace BookStore.API.Controllers
             var category = await _categoryService.GetById(id);
 
             if (category == null) 
-                return base.NotFound(Enums.StatusCode.CategoryNotFound.GetDescription());
+                return base.NotFound(ResponseMessageHttp.StatusCode.CategoryNotFound.GetDescription());
 
            var isDeleted = await _categoryService.Remove(category);
 
            if (!isDeleted) 
-                return base.BadRequest(Enums.StatusCode.CategoryDeletedKO.GetDescription());
+                return base.BadRequest(ResponseMessageHttp.StatusCode.CategoryDeletedKO.GetDescription());
 
-            return base.BadRequest(Enums.StatusCode.CategorySuccessDeleted.GetDescription());
+            return base.BadRequest(ResponseMessageHttp.StatusCode.CategorySuccessDeleted.GetDescription());
 
            //var CategoryDto = category.Adapt<CategoryResultDto>();
            //return Ok(CategoryDto);
@@ -111,7 +111,7 @@ namespace BookStore.API.Controllers
                 return Ok(categories);
             }
 
-            return base.NotFound(Enums.StatusCode.CategoryNotFound.GetDescription());
+            return base.NotFound(ResponseMessageHttp.StatusCode.CategoryNotFound.GetDescription());
         }
     }
 }

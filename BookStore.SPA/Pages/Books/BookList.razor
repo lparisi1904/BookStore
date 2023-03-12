@@ -17,25 +17,18 @@
 </div>
 
 <div class="form-group">
-    <label for="Search">Ricerca...</label>
-    <div class="input-group">
+    @*<label for="Search">Ricerca</label>*@
+    <br />
+    @*<div class="input-group">*@
         <div class="input-group-prepend">
-            <div class="input-group-text bg-white">
-                <i class="fas fa-search"></i>
+            <div class="input-group-text">
+               <i class='fa fa-search'></i>
             </div>
         </div>
-        <input type="text" class="form-control" placeholder="Search by title, author or category"
+        <input type="text" class="form-control" placeholder="Ricerca per titolo, autore o categoria"
                @bind-value="@SearchedValue" @bind-value:event="oninput" @onkeyup="async () => SearchBook()">
         </input>
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-        </button>
-
-        <button type="button" class="btn btn-primary">
-    <i class="fas fa-search"></i>
-  </button>
-
-    </div>
+    @*</div>*@
 </div>
 
 
@@ -72,8 +65,8 @@ else
                     </td>*@
 
                     <td>
-                        <button class="btn btn-warning" onclick="@(async () => AddBookPage())">Modifica</button>
-                        <button class="btn btn-danger" onclick="@(async () =>  DeleteBook(book))">Cancella</button>
+                        <button class="btn btn-warning btn-sm" onclick="@(async () => AddBookPage())">Modifica</button>
+                        <button class="btn btn-danger btn-sm" onclick="@(async () =>  DeleteBook(book))">Cancella</button>
                     </td>
 
                 </tr>
@@ -105,15 +98,13 @@ else
         StateHasChanged();
     }
 
-
     protected async void AddBookPage()
     {
         NavigationManager.NavigateTo("/bookedit");
     }
 
-
     protected async void DeleteBook(Book book)
-    {
+   {
         bool confirm = await JsRuntime.InvokeAsync<bool>("Cancellazione", $"Sei sicuro di voler cancellare il libro  {book.Title}?");
         if (confirm)
         {
