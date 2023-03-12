@@ -15,17 +15,7 @@ namespace BookStore.Infrastructure.Repositories
         // La proprietà DbSet viene utilizzata come scorciatoia per eseguire le operazioni nel database
         protected readonly DbSet<TEntity> DbSet;
 
-        protected BaseRepository(BookStoreContext db)
-        {
-            Db = db;
-            DbSet = db.Set<TEntity>();
-        }
 
-        public virtual async Task Add(TEntity entity)
-        {
-            DbSet.Add(entity);
-            await SaveChanges();
-        }
         public virtual async Task<List<TEntity>> GetAll()
         {
             return await DbSet.ToListAsync();
@@ -37,6 +27,20 @@ namespace BookStore.Infrastructure.Repositories
             return await DbSet
                 .SingleOrDefaultAsync(book => book.Id == id);
         }
+
+        protected BaseRepository(BookStoreContext db)
+        {
+            Db = db;
+            DbSet = db.Set<TEntity>();
+        }
+
+        public virtual async Task Add(TEntity entity)
+        {
+            DbSet.Add(entity);
+            await SaveChanges();
+        }
+
+
 
         public virtual async Task Update(TEntity entity)
         {

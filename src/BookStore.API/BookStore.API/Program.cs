@@ -10,11 +10,11 @@ using BookStore.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// -----------------------------
 //Add services to the container.
+//------------------------------
 
 // Mappatura del connectionString al database...
-//builder.Services.AddScoped<BookStoreContext>();
 builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnStr")));
 

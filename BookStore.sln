@@ -12,7 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Analisi Progetto", "Analisi Progetto", "{E1FC3262-C45D-41C5-8934-12415B9E166A}"
 	ProjectSection(SolutionItems) = preProject
 		AnalisiStrutturale.txt = AnalisiStrutturale.txt
-		src\BookStore.API\BookStore.API\Architecture.txt = src\BookStore.API\BookStore.API\Architecture.txt
+		CleanArchitecture.txt = CleanArchitecture.txt
 		Dependency Injection.txt = Dependency Injection.txt
 		SqlCreateDb.sql = SqlCreateDb.sql
 		Verbi HTTP.txt = Verbi HTTP.txt
@@ -23,6 +23,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.Tests", "tests\BookStore.Domain.Tests\BookStore.Tests.csproj", "{FF91FD5C-117F-47E7-8D5A-72D2EB006175}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStore.SPA", "BookStore.SPA\BookStore.SPA.csproj", "{3976D999-119B-4BD3-84A6-A8C5C51D706E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{023A4D70-61A8-4342-8DD5-B4C5D794A597}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{4F863DF5-1BC8-47C5-8001-9F933908181C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{DE253FE3-3CD6-448F-B3C8-E6D06D8EB915}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{CBB3306E-77AD-4602-99F5-526C6E2D0D0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,7 +63,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{24751F36-DF19-4124-AAA3-95FD2A74B4A0} = {023A4D70-61A8-4342-8DD5-B4C5D794A597}
+		{16124C02-9338-40E5-B537-881AB28F35E6} = {4F863DF5-1BC8-47C5-8001-9F933908181C}
+		{79AF99B9-FE43-4148-A118-8B7A47B728EE} = {DE253FE3-3CD6-448F-B3C8-E6D06D8EB915}
 		{FF91FD5C-117F-47E7-8D5A-72D2EB006175} = {5D31EDB0-81F8-416D-8016-F1CF2C7DF303}
+		{3976D999-119B-4BD3-84A6-A8C5C51D706E} = {CBB3306E-77AD-4602-99F5-526C6E2D0D0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94199F02-E68A-42F2-8DBE-1F319DE32FA1}

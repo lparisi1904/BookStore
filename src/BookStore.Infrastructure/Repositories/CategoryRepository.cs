@@ -11,6 +11,5 @@ namespace BookStore.Infrastructure.Repositories
     public class CategoryRepository: BaseRepository<Category> , ICategoryRepository
     {
         public CategoryRepository(BookStoreContext context) :base(context) { }
-
     }
 }

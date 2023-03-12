@@ -16,7 +16,7 @@ namespace BookStore.Domain.Interfaces
         Task Update(TEntity entity);
         Task Remove(TEntity entity);
 
-        //passo un'espressione lambda per cercare 'qualsiasi' entità con qualsiasi parametro.
+        //passo un'espressione lambda per cercare 'qualsiasi' entità con 'qualsiasi' parametro.
         Task<IEnumerable<TEntity>> Search(Expression<Func<TEntity, bool>> predicate);
         
         Task<int> SaveChanges();

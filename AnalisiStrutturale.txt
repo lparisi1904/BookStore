@@ -1,6 +1,6 @@
 
 ARCHITETTURA E ANALISI STRUTTURALE DEL CODICE
-------------------------------
+-----------------------------------------------
 
 SCOPO: 
  Eseguire operazioni CRUD per libri e categorie di libri. 
@@ -76,6 +76,7 @@ LIVELLO DOMAIN che comprende:
 
 (Nota:)
 I moduli di alto livello 'NON DEVONO' dipendere da moduli di basso livello. Entrambi dovrebbero dipendere da astrazioni.
+
 IMPORTANTE:
 Significa che non dovremmo dipendere da un'implementazione (una CLASSE CONCRETA) ma dobbiamo dipendere da un'ASTRAZIONE.
 (questa può essere un'interfaccia o qualsiasi altro modo di astrazione). 

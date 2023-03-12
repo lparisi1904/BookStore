@@ -92,8 +92,9 @@ namespace BookStore.Domain.Tests
         {
             var category = CreateCategory();
 
-            _categoryRepositoryMock.Setup(c =>
-                c.GetById(category.Id)).ReturnsAsync(category);
+            _categoryRepositoryMock.Setup(cat =>
+                cat.GetById(category.Id))
+                .ReturnsAsync(category);
 
             var result = await _categoryService.GetById(category.Id);
 
@@ -106,7 +107,7 @@ namespace BookStore.Domain.Tests
         public async void GetById_ShouldReturnNull_WhenCategoryDoesNotExist()
         {
             _categoryRepositoryMock
-                .Setup(x => x.GetById(1))
+                .Setup(cat => cat.GetById(1))
                 .ReturnsAsync((Category)null);
 
             var resul = await _categoryService.GetById(1);

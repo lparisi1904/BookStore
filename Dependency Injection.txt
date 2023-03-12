@@ -1,27 +1,219 @@
+DEPENDENCY INJECTOR
+
+
+AddTransient =>
+
+COSA FA...
+----------
+Crea nuove istanze di servizio ogni volta che un componente ne ha bisogno e viene distrutta dalla memoria dopo che è stata usata.
+  
+QUANDO USARLO => 
+  quando i services sono veloci senza un costruttore con una logica complessa che ne determina la lentezza se ne vengono costruite molte 
+
+
+AddScoped => 
+
+COSA FA...
+----------
+  crea una nuova istanza e la riutilizza in vari componenti finche siamo nel contesto della stessa richiesta HTTP e poi la distrugge
+
+QUANDO USARLO =>   
+  quando i services sono costosi a liv. prestazionale e nn si vuole la ricostruzione ogni volta..x ogni richiesta HTTP
+  N.B. Da utilizzare nel DbContext di EF. x l'accesso ai dati..
+
+
+
+AddSingleton => 
+
+COSA FA...
+----------
+  Crea un "unica" istanza del servizio che utilizza in tutti componenti che ne necessitano e anche in richieste HTTP diverse
+
+
 -----------------------------------
-SCOPO della  Dependency Injection
+SCOPO della  dependency injection
 -----------------------------------
 fare in modo che i componenti siano facilmente sostituibili. 
 E lo facciamo con l'uso di Interfacce..
 l'interfaccia descrive semplicemente quali sono i membri pubblici che una classe dovrà implementare e non il modo in cui deve implementarli. 
-Il modo, invece, lo definisco nella classe 'Service' che è un'implementazione CONCRETA dell'interfaccia.
+Il modo, invece, lo definirà la nostra classe di 'Service' che è un'implementazione CONCRETA dell'interfaccia che abbiamo appena scritto.
+
+
+1. 
+Definisco un'interfaccia che abbia i membri pubblici del servizio applicativo.
+
+Esempio..
+public interface ICourseService
+{
+  List<CourseViewModel> GetCourses();
+  CourseDetailViewModel GetCourse(int id);
+}
+
+L'interfaccia descrive semplicemente QUALI SONO i membri pubblici che una classe dovrà implementare e non il MODO in cui deve implementarli. 
+Il modo, invece, lo definirà la nostra classe che è un'implementazione concreta dell'interfaccia..
+
+// => In CourseService implemento ICourseService
+public class CourseService : ICourseService
+{
+  public List<CourseViewModel> GetCourses()
+  {
+    //Omesso...
+  }
+  public CourseDetailViewModel GetCourse(int id)
+  {
+    //Omesso..
+  }
+}
 
 Poi mi sposto nel Controller e faccio in modo che abbia una dipendenza da tale interfaccia. 
 Un'istanza dell'interfaccia dovrà essere fornita dall'esterno.
-Le dipendenze le possiamo esprimere come parametri del costruttore. 
+Le dipendenze le possiamo esprimere come parametri del costruttore.
 
-Esempio pratico:
-private readonly IBookService _bookService;
-
-// Ecco il costruttore. 
-// copiamo su un campo privato (_bookService) in modo che sia accessibile dalle Action...
-public NomeController(ICourseService bookService)
+public class CoursesController : Controller
 {
-    this._bookService = bookService;
+  private readonly ICourseService _courseService;
+ 
+  //Ecco il costruttore. 
+  public CoursesController(ICourseService courseService)
+  {
+    //La copiamo su un campo privato in modo che sia accessibile dalle Action...
+    _courseService = courseService;
+  }
+ 
+  public IActionResult Index()
+  {
+    //Usiamo l'istanza del courseService che avevamo ricevuto nel costruttore
+    List<CourseViewModel> courses = _courseService.GetCourses();
+    return View(courses);
+  }
 }
 
-// nella classe nel Programs 'inietto' i Servizi (Interfacce + Classi concrete):
+Ora il nostro Controller è diventato DEBOLMENTE ACCOPPIATO al servizio applicativo perché non dipende più da un'implementazione concreta ma da un'interfaccia. 
 
-builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+VANTAGGIO:
+---------
+Se volessimo sostituire CourseService con un'altra implementazione lo potremo fare SENZA TOCCARE il Controller.
+
+
+Ci basta andare nel metodo ConfigureServices della classe Program e indicare ad ASP.NET Core quale classe concreta deve costruire quando incontra componenti che dipendono dall'interfaccia ICourseService. 
+
+Questo è necessario perché le interfacce non possono essere costruite.
+
+Esempio..
+public void ConfigureServices(IServiceCollection services)
+{
+  services.AddScoped<ICourseService, CourseService>();
+  //Nel momento in cui vogliamo cambiare implementazione, ci basterà cambiare la riga con:
+  // => services.AddScoped<ICourseService, AltraImplementazioneDiCourseService>();
+}
+
+Questa pratica è chiamata dependency injection, perché le dipendenze di un componente vengono passate dall'esterno (si dice anche "iniettate"). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------
+Riepilogo della sezione
+Accoppiamento forte e debole dei componenti
+Quando costruiamo un'applicazione, dovremmo sempre fare in modo che i vari componenti siano sostituibili individualmente, un po' come sostituire la candele di un'automobile non comporta la sostituzione del motore o della carrozzeria.
+
+Questo è un accorgimento importante da tenere a mente perché i requisiti cambiano nel tempo e il nostro committente ci chiederà di modificare il comportamento dell'applicazione in alcuni punti. Perciò dobbiamo farci trovare pronti per acconsentire alla sua richiesta con il minimo dispendio di tempo ed energie.
+
+Nella scorsa sezione abbiamo fatto interagire due componenti: il CoursesController e il CourseService. Rivediamo qual era il codice che avevamo usato all'interno dell'action Index.
+
+public IActionResult Index()
+{
+  var courseService = new CourseService();
+  List<CourseViewModel> courses = courseService.GetCourses();
+  return View(courses);
+}
+Questo codice presenta un problema perché rende il CoursesController fortemente accoppiato al CoursesService. Cioè, nel momento in cui vogliamo sostituire il CourseService con un'altra implementazione, che magari attinge i dati da un'altra fonte, dobbiamo tornare all'interno del CoursesController e sostituire a mano tutte le occorrenze di CourseService. In grandi applicazioni, questo può essere un lavoro dispendioso e propenso a errori. È come se le candele dell'automobile fossero inglobate all'interno del motore, costringendoci così a sostituire l'intero motore quando le candele si logorano dopo appena 50.000 km percorsi.
+È per evitare questo problema che gli ingegneri meccanici hanno progettato sul motore un alloggiamento filettato facilmente accessibile dall'esterno, che rappresenta l'interfaccia di collegamento con la candela.
+
+Una candela vecchia può essere facilmente sostituita con uno nuova semplicemente svitandola. Un semplice accorgimento che fa risparmiare molto tempo e denaro dato che la candela si usura molto prima del motore. Foto di Ascaron su Wikimedia Commons.
+Anche noi, nella nostra applicazione, dovremmo fare in modo che i componenti siano facilmente sostituibili. Per questo, il linguaggio C# ci viene incontro con le interfacce.
+
+Iniziamo definendo un'interfaccia che definisca i membri pubblici del servizio applicativo .
+
+public interface ICourseService
+{
+  List<CourseViewModel> GetCourses();
+  CourseDetailViewModel GetCourse(int id);
+}
+Come si vede, l'interfaccia descrivere semplicemente quali sono i membri pubblici che una classe dovrà implementare e non il modo in cui deve implementarli. Il modo, invece, lo definirà la nostra classe CourseService che è un'implementazione concreta dell'interfaccia che abbiamo appena scritto.
+
+//Ora CourseService implementa ICourseService
+public class CourseService : ICourseService
+{
+  public List<CourseViewModel> GetCourses()
+  {
+    //Omissis...
+  }
+  public CourseDetailViewModel GetCourse(int id)
+  {
+    //Omissis..
+  }
+}
+Poi rechiamoci nel CoursesController e facciamo in modo che abbia una dipendenza da tale interfaccia. Le dipendenze le possiamo esprimere come parametri del costruttore.
+
+public class CoursesController : Controller
+{
+  private readonly ICourseService courseService;
+ 
+  //Ecco il costruttore. Un'istanza di un ICourseService dovrà essere fornita dall'esterno.
+  //Questo è equivalente a una candela che viene avvitata sull'esterno del motore.
+  public CoursesController(ICourseService courseService)
+  {
+    //La copiamo su un campo privato in modo che sia accessibile dalle action.
+    this.courseService = courseService;
+  }
+ 
+  public IActionResult Index()
+  {
+    //Usiamo l'istanza del courseService che avevamo ricevuto nel costruttore
+    List<CourseViewModel> courses = courseService.GetCourses();
+    return View(courses);
+  }
+}
+Ora il nostro CoursesController è diventato debolmente accoppiato al servizio applicativo che fornisce i corsi perché non dipende più da un'implementazione concreta ma da un'interfaccia. Infatti, se volessimo sostituire CourseService con un'altra implementazione lo potremo fare senza toccare il controller.
+
+Ci basta andare nel metodo ConfigureServices della classe Startup e indicare ad ASP.NET Core quale classe concreta deve costruire quando incontra componenti che dipendono dall'interfaccia ICourseService. Questo è necessario perché le interfacce non possono essere costruite.
+
+public void ConfigureServices(IServiceCollection services)
+{
+  services.AddScoped<ICourseService, CourseService>();
+  //Nel momento in cui vogliamo cambiare implementazione, ci basterà cambiare la riga con:
+  //services.AddScoped<ICourseService, AltraImplementazioneDiCourseService>();
+}
+
+Questa pratica è chiamata dependency injection, perché le dipendenze di un componente vengono passate dall'esterno (si dice anche "iniettate"). 
+L'utilità di questa pratica risulterà ancor più evidente in futuro, quando affronteremo l'argomento del testing.
+
+
+
+Ciclo di vita dei servizi
+ASP.NET Core, grazie al suo meccanismo di dependency injection, si preoccuperà al posto nostro di costruire le istanze di servizi come CourseService da cui i controller e gli altri componenti dipendono.
+
+Ma... quand'è che ASP.NET Core distrugge le istanze ha creato, liberando così la memoria?
+Dipende dal ciclo di vita che abbiamo indicato quando abbiamo registrato il servizio dal metodo ConfigureServices.
+
+Se usiamo services.AddTransient<ICourseService, CourseService>(), l'istanza potrà essere distrutta quando viene distrutto il componente che l'ha utilizzata, cioè quando il controller ha terminato la sua esecuzione;
+
+Se usiamo services.AddScoped<ICourseService, CourseService>(), l'istanza potrà essere distrutta solo al termine della richiesta HTTP corrente. Questo vuol dire che ASP.NET Core passerà la stessa identica istanza ad altri componenti che ne abbiano bisogno, almeno fintanto che la richiesta HTTP è ancora in corso. Come vedremo in seguito, questo può essere un ottimo modo per riutilizzare efficacemente servizi che sono "costosi" da costruire come il DbContext di Entity Framework Core che vedremo in seguito;
+
+Se usiamo services.AddSingleton<ICourseService, CourseService>(), l'istanza potrà essere distrutta solo quando l'applicazione viene arrestata. Questo vuol dire che ASP.NET Core creerà al massimo una sola istanza e la passerà a ogni componente che ne abbia bisogno, anche per richieste HTTP che arrivano da utenti diversi. Bisogna fare attenzione perché più thread contemporaneamente accederanno alla stessa istanza, causando severi effetti collaterali se non è stata progettata per essere thread-safe.
+
+Risorse per questa lezione
+-----------
