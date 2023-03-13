@@ -39,6 +39,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// reference to CORS
 var booksclient = "bookclient";
 
 builder.Services.AddCors(option =>
@@ -53,8 +54,9 @@ builder.Services.AddCors(option =>
     });
 });
 
-var app = builder.Build();
+//builder.Services.AddCors();
 
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -62,10 +64,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
-// reference to CORS
-builder.Services.AddCors();
 
 
 app.UseHttpsRedirection();

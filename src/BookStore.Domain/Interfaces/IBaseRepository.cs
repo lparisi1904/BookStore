@@ -10,9 +10,10 @@ namespace BookStore.Domain.Interfaces
 
     public interface IBaseRepository<TEntity> : IDisposable where TEntity : BaseEntity
     {
-        Task Add(TEntity entity);
         Task<List<TEntity>> GetAll();
         Task<TEntity> GetById(long id);
+
+        Task Add(TEntity entity);
         Task Update(TEntity entity);
         Task Remove(TEntity entity);
 

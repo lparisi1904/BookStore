@@ -1,5 +1,6 @@
 ﻿namespace BookStore.API.Utils
 {
+    // dDa inserire in tabella Category...
     public enum Genre
     {
         Fantasy,
@@ -30,4 +31,3 @@
         Biography
     }
 }
-

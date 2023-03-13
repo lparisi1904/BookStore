@@ -8,7 +8,7 @@ namespace BookStore.Infrastructure.Repositories
 {
     public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        // È possibile usare un oggetto DbSet<TEntity> per eseguire query e salvare le istanze di TEntity.
+        // Utilizzo oggetto DbSet<TEntity> per eseguire query e salvare le istanze di TEntity.
         // Le query LINQ su un DbSet< TEntity > verranno tradotte in query su DB.
         // La proprietà DbSet viene utilizzata come scorciatoia per eseguire le operazioni nel database
         protected readonly DbSet<TEntity> DbSet;
