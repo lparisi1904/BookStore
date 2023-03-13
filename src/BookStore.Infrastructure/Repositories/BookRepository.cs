@@ -26,11 +26,25 @@ namespace BookStore.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
 
 
+        /// <summary>
+        /// Da Id di Categoria otteniamo una lista di libri appartenenti a quella Categoria (Id)
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Book>> GetBooksByCategory(long categoryId)
         {
             return await Search(b => b.CategoryId == categoryId);
         }
 
+
+        /// <summary>
+        /// Ricerca tutti i libri avendo come criterio ricerca il Titolo, l'Autore, 
+        /// il nome della Categoria o la Descrizione
+        /// </summary>
+        /// <param name="searchValue"></param>
+        /// <returns>
+        /// Ritorna tutti i libri avendo come criterio ricerca 'searchValue'
+        /// </returns>
         public async Task<IEnumerable<Book>> SearchBookWithCategory(string searchValue)
         {
             return await Db.Books

@@ -1,13 +1,17 @@
 ﻿@page "/bookedit"
 @page "/bookedit/{BookId:int}"
 
+
 <section class="book-edit text-center">
 
     <h1 class="page-title">@Title</h1>
 
-
     <EditForm Model="@Book" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator></DataAnnotationsValidator>
+
+
+
+
 
         <div class="form-group row justify-content-center">
             <label for="title" class="col-form-label col-sm-2">Titolo: </label>

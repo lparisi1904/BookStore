@@ -13,8 +13,8 @@ namespace BookStore.Domain.Interfaces
         /// <returns></returns>
         /// 
         // => Aggiungo i metodi personalizzati per Book
-        new Task<List<Book>> GetAll();
-        new Task<Book> GetById(long id);
+        //new Task<List<Book>> GetAll();
+        //new Task<Book> GetById(long id);
         Task<IEnumerable<Book>> GetBooksByCategory(long categoryId);
         Task<IEnumerable<Book>> SearchBookWithCategory(string searchValue);
     }

@@ -1,0 +1,6 @@
+﻿CREA CLASSI SU MODELLO DELLE TABELLE SU DB..
+=> utilizzando il comando Scaffold-DbContext
+
+
+Scaffold-DbContext "Server=.\SQLExpress;Database=BookStore;Trusted_Connection=true;Encrypt=false;" 
+                    Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -force -Context BookStoreContext

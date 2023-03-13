@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using AutoMapper;
 using BookStore.Domain.Entities;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,21 +41,30 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // reference to CORS
-var booksclient = "bookclient";
+//var booksclient = "bookclient";
 
-builder.Services.AddCors(option =>
-{
-    option.AddPolicy(name: booksclient,
-    policy =>
+//builder.Services.AddCors(option =>
+//{
+//    option.AddPolicy(name: booksclient,
+//    policy =>
+//    {
+//        policy
+//         .AllowAnyHeader()
+//         .AllowAnyMethod()
+//         .AllowAnyOrigin();
+//    });
+//});
+
+
+builder.Services.AddCors(opts => {
+    opts.AddPolicy("AllowAll", builder =>
     {
-        policy
-         .AllowAnyHeader()
-         .AllowAnyMethod()
-         .AllowAnyOrigin();
+        builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
     });
 });
 
-//builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -68,7 +78,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(booksclient);
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 

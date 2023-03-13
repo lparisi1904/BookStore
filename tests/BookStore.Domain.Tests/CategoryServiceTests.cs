@@ -181,6 +181,7 @@ namespace BookStore.Domain.Tests
             Assert.IsType<Category>(result);
         }
 
+
         [Fact]
         public async void Update_ShouldNotUpdateCategory_WhenCategoryDoesNotExist()
         {
