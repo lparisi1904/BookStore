@@ -1,36 +1,38 @@
 ﻿@page "/books"
-@using Blazored.Toast.Services;
+@page "/books/{BookId:int}"
 @using BookStore.SPA.Interfaces
 @using BookStore.SPA.Models
 @inject IJSRuntime JsRuntime
 @inject IToastService ToastService
 
 
+@inherits BookEdit
+
+
+<EditForm Model="@Book" OnInvalidSubmit="@HandleValidSubmit">
+
 <div class="jumbtron">
-    <h1 class="display-4 text-center">Elenco libri</h1>
+    <h1 class="display-4 text-center">Elenco Libri</h1>
 </div>
 
-
 <div class="col-md-12">
-    <button type="button" class="btn btn-primary" @onclick="@AddBookPage">Nuovo libro</button>
+    <button data-toggle="modal" data-target="#addEditBookModal" class="btn btn-primary" data-bs-toggle="modal">Nuovo</button>
     <hr />
 </div>
 
 <div class="form-group">
-    @*<label for="Search">Ricerca</label>*@
-    <br />
-    @*<div class="input-group">*@
-        <div class="input-group-prepend">
-            <div class="input-group-text">
-               <i class='fa fa-search'></i>
+    <label for="Search">Ricerca</label>
+    <div class="input-group">
+        @*<div class="input-group-prepend">*@
+            <div class="input-group-text bg-white">
+                <i class="fas fa-search"></i>
             </div>
-        </div>
-        <input type="text" class="form-control" placeholder="Ricerca per titolo, autore o categoria"
+        @*</div>*@
+        <input type="text" class="form-control" placeholder="Ricerca per Titolo, autore o categoria"
                @bind-value="@SearchedValue" @bind-value:event="oninput" @onkeyup="async () => SearchBook()">
         </input>
-    @*</div>*@
+    </div>
 </div>
-
 
 @if (Books == null)
 {
@@ -41,10 +43,10 @@ else
     <table class="table table-condensed table-bordered table-striped table-hover">
         <thead>
             <tr>
-                <th class="col-lg-2">Libro</th>
-                <th class="col-lg-1">Autore</th>
-                <th class="col-lg-1">Categoria</th>
-                <th class="col-lg-3">Descrizione</th>
+                <th class="col-lg-2">Book</th>
+                <th class="col-lg-1">Author</th>
+                <th class="col-lg-1">Category</th>
+                <th class="col-lg-3">Description</th>
             </tr>
         </thead>
         <tbody>
@@ -55,27 +57,103 @@ else
                     <td>@book.Author</td>
                     <td>@book.CategoryName</td>
                     <td>@book.Description</td>
-@*                    <td>
-                        <a href="@($"bookedit/{book.Id}")" class="btn btn-default">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger" @onclick="() => DeleteBook(book)">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </td>*@
-
                     <td>
-                        <button class="btn btn-warning btn-sm" onclick="@(async () => AddBookPage())">Modifica</button>
-                        <button class="btn btn-danger btn-sm" onclick="@(async () =>  DeleteBook(book))">Cancella</button>
+                            <button data-toggle="modal" data-target="#addEditBookModal" class="btn btn-warning btn-sm" onclick="@(async () => await EditBook(book.Id))">Modifica</button>
+                        @*<button class="btn btn-warning btn-sm" onclick="@(async () => await EditBook(Book.Id))" data-dismiss="modal">Modifica</button>*@
+                        <button data-toggle="modal" data-target="#deleteBookModal" class="btn btn-danger btn-sm"><i class="bi bi-trash text-light"></i>Cancella</button>
                     </td>
-
                 </tr>
             }
         </tbody>
     </table>
 }
 
+    @*Add-Edit modal*@
+    <div id="addEditBookModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">@Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
 
+                <div class="form-group">
+                    <label for="Title" class="control-label">Titolo</label>
+                        <InputText id="title" class="form-control" @bind-Value="@Book.Title" placeholder="Titolo"></InputText>
+                        <ValidationMessage For="@(() => Book.Title)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Author" class="control-label">Autore</label>
+                    <InputText id="author" class="form-control" @bind-Value="@Book.Author" placeholder="Autore"></InputText>
+                </div>
+
+                <div class="form-group">
+                    <label for="Description" class="control-label">Descrizione</label>
+                        <InputTextArea id="description" class="form-control" @bind-Value="@Book.Description" placeholder="Descrizione"></InputTextArea>
+                </div>
+               
+                <div class="form-group">
+                    <label for="categoryId" class="control-label">Categoria</label>
+                        <InputSelect id="categoryId" @bind-Value="@Book.CategoryId" class="form-select form-control" placeholder="Categoria">
+                            <option selected disabled hidden value="0">Seleziona una categoria</option>
+                            @foreach (var category in CategoryList)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => Book.CategoryId)" />
+                </div>
+
+            </div>
+                <div class="modal-footer">
+                    <div class="col-sm-8 col-md-11">
+                        <br />
+                        <button type="button" class="btn btn-danger" onclick="@(async () => await HandleValidSubmit())" data-bs-dismiss="modal">Conferma</button>
+                        <button class="btn btn-info" type="submit" data-dismiss="modal" aria-label="Close" @onclick="@ModalCancel">Annulla</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteBookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Elimina Libro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>Vuoi cancellare questo libro ??</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Titolo</td>
+                            <td>@Book.Title</td>
+                        </tr>
+                        <tr>
+                            <td>Autore</td>
+                            <td>@Book.Author</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" type="submit" data-dismiss="modal" aria-label="Close" @onclick="@ModalCancel">Annulla</button>
+                    @*<button type="button" class="btn btn-danger" onclick="(async () => DeleteBook(@Book))" data-bs-dismiss="modal">Conferma</button>*@
+                    <button class="btn btn-danger" onclick="@(async () => await DeleteBook(Book))" data-dismiss="modal">Cancella</button>
+            </div>
+        </div>
+    </div>
+</div>
+</EditForm>
 
 @code {
     [Inject]
@@ -84,54 +162,28 @@ else
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
-    public IEnumerable<Book> Books { get; set; }
-    public IEnumerable<Book> CompleteListBooks { get; set; }
+    //public IEnumerable<Book> Books { get; set; }
+    //public IEnumerable<Book> CompleteListBooks { get; set; }
 
     protected string SearchedValue { get; set; }
 
 
+    //protected async Task OnInitializedAsync()
+    //{
+    //    Books = (await BookService.GetAll()).ToList();
+    //    CompleteListBooks = Books;
+    //}
 
-    protected override async Task OnInitializedAsync()
-    {
-        Books = (await BookService.GetAll()).ToList();
-        CompleteListBooks = Books;
-        StateHasChanged();
-    }
 
-    protected async void AddBookPage()
-    {
-        NavigationManager.NavigateTo("/bookedit");
-    }
-
-    protected async void DeleteBook(Book book)
-   {
-        bool confirm = await JsRuntime.InvokeAsync<bool>("Cancellazione", $"Sei sicuro di voler cancellare il libro  {book.Title}?");
-        if (confirm)
-        {
-            if (await BookService.Delete(book.Id))
-            {
-                Books = (await BookService.GetAll()).ToList();
-                CompleteListBooks = Books;
-
-                ToastService.ShowSuccess("Cancellato con successo!");
-                StateHasChanged();
-            }
-            else
-            {
-                ToastService.ShowError("Qualcosa non ha funzionato. Riprova.");
-            }
-        }
-    }
 
     protected void SearchBook()
-   {
+    {
         if (!string.IsNullOrEmpty(SearchedValue))
         {
-            var search = SearchedValue.ToLower();
-
-            Books = CompleteListBooks.Where(b => b.Title.ToLower().Contains(search) ||
-                                    b.Author.ToLower().Contains(search) ||
-                                    b.CategoryName.ToLower().Contains(search)
+            var searchedValueLowerCase = SearchedValue.ToLower();
+            Books = CompleteListBooks.Where(b => b.Title.ToLower().Contains(searchedValueLowerCase) ||
+                                    b.Author.ToLower().Contains(searchedValueLowerCase) ||
+                                    b.CategoryName.ToLower().Contains(searchedValueLowerCase)
                                 ).ToList();
         }
         else
@@ -139,12 +191,4 @@ else
             Books = CompleteListBooks;
         }
     }
-}
-
-
-
-
-
-
-
-
+} 

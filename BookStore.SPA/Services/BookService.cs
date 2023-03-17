@@ -90,14 +90,14 @@ namespace BookStore.SPA.Services
         public async Task<Book?> Add(Book book)
         {
             // creiamo un'istanza di HttpClient
-            var httpClient = _httpClientFactory.CreateClient(_baseUri);
+           // var httpClient = _httpClientFactory.CreateClient(_baseUri);
 
             // serializzo il libro su una variabile JSON.
             var bookJson = new StringContent(JsonSerializer.Serialize(book), Encoding.UTF8, "application/json");
 
             // faccio la richiesta Post al back-end
             //var response = await httpClient.PostAsync($"{_baseUri}api/books", bookJson);
-            var response = await httpClient.PostAsync($"api/books", bookJson);
+            var response = await _httpClient.PostAsJsonAsync($"api/books", bookJson);
 
             //Chiamo il response.IsSuccessStatusCode, per sapere se la risposta è andata a buon fine o meno, in caso di Successful, restituirà true.
             if (response.IsSuccessStatusCode)
@@ -116,7 +116,7 @@ namespace BookStore.SPA.Services
             var httpClient = _httpClientFactory.CreateClient(_baseUri);
 
             // faccio la richiesta Delete comunicando l'id del libro 
-            var response = await httpClient.DeleteAsync($"{_baseUri}api/books/{bookId}");
+            var response = await httpClient.DeleteAsync($"api/books/{bookId}");
 
             // restituisce true, altrimenti restituisce false.
             return response.IsSuccessStatusCode;
@@ -128,7 +128,7 @@ namespace BookStore.SPA.Services
             var httpClient = _httpClientFactory.CreateClient();
 
             //  faccio la richiesta Get al back-end
-            var response = await httpClient.GetAsync($"{_baseUri}api/books/{Bookid}");
+            var response = await _httpClient.GetAsync($"api/books/{Bookid}");
 
             // verifico se la risposta ha un codice di stato di successo e, in caso affermativo, restituirà il libro, altrimenti restituirà null.
             if (response.IsSuccessStatusCode)

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BookStore.SPA.Pages.Books
 {
-    public partial class BookEdit
+    public partial class BookEdit : ComponentBase
     {
         [Parameter]
         public int BookId { get; set; }
@@ -22,15 +22,25 @@ namespace BookStore.SPA.Pages.Books
         [Inject]
         public IToastService ToastService { get; set; }
 
+        [Parameter]
         public Book Book { get; set; } = new Book();
 
+        [Parameter]
+        public EventCallback<bool> OnClose { get; set; }
+
+
         public IEnumerable<Category> CategoryList { get; set; } = new List<Category>();
+        public IEnumerable<Book> Books { get; set; }
+        public IEnumerable<Book> CompleteListBooks { get; set; }
 
         protected string Title = "Nuovo Libro";
 
-        protected override async Task OnInitializedAsync()
+        protected async override Task OnInitializedAsync()
         {
             CategoryList = await CategoryService.GetAll();
+
+            Books = (await BookService.GetAll()).ToList();
+            CompleteListBooks = Books;
 
             if (BookId != 0)
             {
@@ -48,15 +58,31 @@ namespace BookStore.SPA.Pages.Books
                 }
             }
         }
+
         protected async Task HandleValidSubmit()
         {
             if (Book.Id == 0)
                 await AddBook();
             else
                 await UpdateBook();
+           
+            //StateHasChanged();
         }
 
-        private async Task AddBook()
+
+        protected async Task EditBook(int id) 
+        {
+            var book = await BookService.GetById(id);
+
+            if (book != null)
+            {
+                Book = book;
+                Title = $"Modifica {Book.Title}";
+            }
+            //StateHasChanged();
+        }
+
+        protected async Task AddBook()
         {
             var result = await BookService.Add(Book);
             if (result != null)
@@ -70,12 +96,13 @@ namespace BookStore.SPA.Pages.Books
             }
         }
 
-        private async Task UpdateBook()
+        protected async Task UpdateBook()
         {
             var result = await BookService.Update(Book);
             if (result)
             {
                 ToastService.ShowSuccess($"Il libro {Book.Title} è stato aggiornato.");
+                StateHasChanged();
                 NavigateToBooksPage();
             }
             else
@@ -84,9 +111,35 @@ namespace BookStore.SPA.Pages.Books
             }
         }
 
-        private void NavigateToBooksPage()
+        protected async Task DeleteBook(Book book)
+        {
+            if (book.Id == 0) return;
+
+            if (await BookService.Delete(book.Id))
+            {
+                Books = (await BookService.GetAll()).ToList();
+                CompleteListBooks = Books;
+
+                ToastService.ShowSuccess("Cancellato");
+                StateHasChanged();
+            }
+            else
+            {
+                ToastService.ShowError("errore");
+            }
+        }
+        protected void NavigateToBooksPage()
         {
             NavigationManager.NavigateTo("/books");
+        }
+            
+        protected Task ModalCancel()
+        {
+            return OnClose.InvokeAsync(false);
+        }
+        protected Task ModalOk()
+        {
+            return OnClose.InvokeAsync(true);
         }
     }
 }
