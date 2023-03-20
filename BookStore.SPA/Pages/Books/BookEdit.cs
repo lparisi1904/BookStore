@@ -79,7 +79,6 @@ namespace BookStore.SPA.Pages.Books
                 Book = book;
                 Title = $"Modifica {Book.Title}";
             }
-            //StateHasChanged();
         }
 
         protected async Task AddBook()
